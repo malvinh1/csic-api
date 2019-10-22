@@ -11,12 +11,9 @@
   "scripts": {
     "start": "ts-node-dev ./src/main.ts",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly ./src/main.ts",
-    "test": "yarn generate && yarn lint && yarn typecheck && yarn format:check && yarn jest",
-    "prepush-test": "yarn generate && yarn lint && yarn typecheck && yarn format:check && yarn local-jest",
     "lint": "eslint --max-warnings 0 \"src/**/*.ts\"",
     "typecheck": "tsc --noEmit -p .",
     "format:check": "prettier --check \"src/**/*.ts\"",
-    "jest": "jest --coverage --passWithNoTests",
     "local-jest": "jest --coverage --passWithNoTests",
     "format": "prettier --write \"src/**/*.ts\""
   },
@@ -35,8 +32,5 @@
     "trailingComma": "all",
     "arrowParens": "always",
     "tabWidth": 2
-  },
-  "pre-push": {
-    "run": "prepush-test"
   }
 }
