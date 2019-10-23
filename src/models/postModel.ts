@@ -1,6 +1,6 @@
 import { getDB } from '../db';
 
-async function addPost(postObject) {
+async function addPost(postObject: any) {
   try {
     let db = await getDB();
   } catch (e) {

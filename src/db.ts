@@ -4,16 +4,26 @@ import { DB_PORT, DB_USER, DB_HOST, DB_NAME, DB_PASSWORD } from './constants';
 
 let db: Promise<Client> | undefined;
 
+let localConfig = {
+  user: DB_USER,
+  host: DB_HOST,
+  database: DB_NAME,
+  password: DB_PASSWORD,
+  port: DB_PORT,
+};
+
 async function connect() {
   try {
-    let client = new Client({
-      user: DB_USER,
-      host: DB_HOST,
-      database: DB_NAME,
-      password: DB_PASSWORD,
-      port: DB_PORT,
-    });
+    let client = new Client(
+      // comment this if you want to use heroku database <------
+      localConfig,
 
+      //comment this if you want to use localhost database <------
+      // {
+      //   connectionString,
+      //   ssl: true,
+      // },
+    );
     await client.connect();
     console.log('Database connected!');
 
