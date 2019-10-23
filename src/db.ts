@@ -1,8 +1,17 @@
 import { Client } from 'pg';
 
-import { DB_PORT, DB_USER, DB_HOST, DB_NAME, DB_PASSWORD } from './constants';
+import {
+  DB_PORT,
+  DB_USER,
+  DB_HOST,
+  DB_NAME,
+  DB_PASSWORD,
+  DATABASE_URL,
+} from './constants';
 
 let db: Promise<Client> | undefined;
+
+const connectionString = DATABASE_URL;
 
 let localConfig = {
   user: DB_USER,
