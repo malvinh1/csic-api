@@ -4,7 +4,7 @@ import apiRouter from './routers';
 
 import { getDB } from './db';
 import { QueryResult } from 'pg';
-import { PORT } from './constants';
+import { SERVER_PORT } from './constants';
 
 const app: express.Application = express();
 
@@ -23,8 +23,8 @@ async function serverSetup() {
 
   app.use('/api', apiRouter);
 
-  app.listen(PORT, () => {
-    console.log(`App is listening on http://127.0.0.1:${PORT}`);
+  app.listen(SERVER_PORT, () => {
+    console.log(`App is listening on http://127.0.0.1:${SERVER_PORT}`);
   });
 }
 

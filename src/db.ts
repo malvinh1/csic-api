@@ -1,16 +1,16 @@
 import { Client } from 'pg';
 
-import { DB_PORT, USER, HOST, DATABASE_NAME, PASSWORD } from './constants';
+import { DB_PORT, DB_USER, DB_HOST, DB_NAME, DB_PASSWORD } from './constants';
 
 let db: Promise<Client> | undefined;
 
 async function connect() {
   try {
     let client = new Client({
-      user: USER,
-      host: HOST,
-      database: DATABASE_NAME,
-      password: PASSWORD,
+      user: DB_USER,
+      host: DB_HOST,
+      database: DB_NAME,
+      password: DB_PASSWORD,
       port: DB_PORT,
     });
 
