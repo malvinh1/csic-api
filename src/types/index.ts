@@ -11,3 +11,10 @@ export type UserSignIn = {
   username: string;
   password: string;
 };
+
+export type ResponseObject = {
+  success: boolean;
+  data: any;
+  message: string;
+  token?: string;
+};
