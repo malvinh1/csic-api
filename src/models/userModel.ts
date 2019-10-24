@@ -80,37 +80,85 @@ async function userSignUp(userObject: UserSignUp) {
 async function userSignIn(userObject: UserSignIn) {
   try {
     let db = await getDB();
-    let { username, password } = userObject;
+    let { credential, password } = userObject;
 
     let hash = sjcl.codec.hex.fromBits(
       sjcl.hash.sha256.hash(password + 'CSIC'),
     );
+    let userResultEmail = await db.query(
+      'SELECT * FROM users where email = $1',
+      [credential],
+    );
 
-    let result = await db.query('SELECT * FROM users where username = $1', [
-      username,
-    ]);
+    let userResultUsername = await db.query(
+      'SELECT * FROM users where username = $1',
+      [credential],
+    );
 
-    if (result.rows[0]) {
-      let decrypted = sjcl.decrypt('CSIC', result.rows[0].password);
+    if (userResultEmail.rows[0]) {
+      let decrypted = sjcl.decrypt('CSIC', userResultEmail.rows[0].password);
       if (hash === decrypted) {
-        let { id } = result.rows[0];
+        let { id } = userResultEmail.rows[0];
 
         let token = jwt.sign({ id }, API_SECRET);
+        {
+          let {
+            id,
+            email,
+            username,
+            full_name: fullName,
+            telephone,
+            location,
+            avatar,
+          } = userResultEmail.rows[0];
+          return {
+            success: true,
+            data: {
+              id,
+              email,
+              username,
+              fullName,
+              telephone,
+              location,
+              avatar,
+            },
+            message: 'Login Success',
+            token: token,
+          };
+        }
+      }
+    }
+    if (userResultUsername.rows[0]) {
+      let decrypted = sjcl.decrypt('CSIC', userResultUsername.rows[0].password);
+      if (hash === decrypted) {
+        let { id } = userResultUsername.rows[0];
 
-        return {
-          success: true,
-          data: {
-            id: result.rows[0].id,
-            email: result.rows[0].email,
-            username: result.rows[0].username,
-            full_name: result.rows[0].full_name,
-            telephone: result.rows[0].telephone,
-            location: result.rows[0].location,
-            avatar: result.rows[0].avatar,
-          },
-          message: 'Login Success',
-          token: token,
-        };
+        let token = jwt.sign({ id }, API_SECRET);
+        {
+          let {
+            id,
+            email,
+            username,
+            full_name: fullName,
+            telephone,
+            location,
+            avatar,
+          } = userResultUsername.rows[0];
+          return {
+            success: true,
+            data: {
+              id,
+              email,
+              username,
+              fullName,
+              telephone,
+              location,
+              avatar,
+            },
+            message: 'Login Success',
+            token: token,
+          };
+        }
       }
     } else {
       return {

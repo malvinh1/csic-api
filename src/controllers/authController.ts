@@ -100,9 +100,9 @@ async function signUp(req: Request, res: Response) {
 
 async function signIn(req: Request, res: Response) {
   try {
-    let { username, password } = req.body;
+    let { credential, password } = req.body;
 
-    if (!username || !password) {
+    if (!credential || !password) {
       res.status(SERVER_OK).json({
         success: false,
         data: {},
@@ -112,7 +112,7 @@ async function signIn(req: Request, res: Response) {
     }
 
     let result = await userModel.userSignIn({
-      username,
+      credential,
       password,
     });
 
