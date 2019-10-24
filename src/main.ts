@@ -1,16 +1,18 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import apiRouter from './routers';
+import apiRouter from './routes';
 
 import { SERVER_PORT } from './constants';
 import { getDB } from './db';
 import { seeder } from './seeder';
+import { cloudinaryConfig } from './cloudinarySetup';
 
 const app: express.Application = express();
 
 async function serverSetup() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use('*', cloudinaryConfig);
   app.locals.db = await getDB();
   await seeder(app.locals.db);
   app.get('/', (req: Request, res: Response) => res.send('Welcome Home!'));
