@@ -25,6 +25,7 @@
     "@types/sjcl": "^1.0.28",
     "@types/validator": "^10.11.3",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.16.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.5.1",
     "express": "^4.17.1",
