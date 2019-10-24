@@ -1,26 +1,17 @@
-import { QueryResult } from 'pg';
 import { Request, Response } from 'express';
-
 import { isEmail } from 'validator';
 import userModel from '../models/userModel';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
-import { getDB } from '../db';
+import { uploader } from 'cloudinary';
+import { generateResponse, dataUri } from '../helpers';
 
 async function signUp(req: Request, res: Response) {
   try {
-    let {
-      email,
-      username,
-      password,
-      full_name,
-      telephone,
-      location,
-    } = req.body;
-
+    let { email, username, password, fullName, telephone, location } = req.body;
     if (!email || !username || !password) {
       res.status(SERVER_OK).json({
         success: false,
-        data: {},
+        data: [],
         message: 'Please fill all required fields',
       });
       return;
@@ -28,48 +19,79 @@ async function signUp(req: Request, res: Response) {
     if (!isEmail(email)) {
       res.status(SERVER_OK).json({
         success: false,
-        data: {},
+        data: [],
         message: 'Email format is wrong',
       });
       return;
     }
 
-    let db = await getDB();
-    let user: QueryResult;
-    user = await db.query('SELECT * FROM users where email = $1', [email]);
-    if (user.rowCount !== 0) {
+    let userResponse = await userModel.getUserByEmail(email);
+    if (userResponse.data.rows.length !== 0) {
       res.status(SERVER_OK).json({
         success: false,
-        data: {},
+        data: [],
         message: 'Email already exist',
       });
     }
 
-    user = await db.query('SELECT * FROM users where username = $1', [
-      username,
-    ]);
-    if (user.rowCount !== 0) {
+    userResponse = await userModel.getUserByUsername(username);
+    if (userResponse.data.rows.length !== 0) {
       res.status(SERVER_OK).json({
         success: false,
-        data: {},
+        data: [],
         message: 'Username already exist',
       });
     }
 
-    let result = await userModel.userSignUp({
-      email,
-      username,
-      password,
-      full_name,
-      telephone,
-      location,
-    });
+    if (req.file) {
+      const file = dataUri(req).content;
+      return uploader
+        .upload(file)
+        .then(async (result: any) => {
+          let avatar = result.url;
+          let userResponse = await userModel.userSignUp({
+            email,
+            username,
+            password,
+            fullName,
+            telephone,
+            location,
+            avatar,
+          });
 
-    if (result.success) {
-      res.status(SERVER_OK).json(result);
+          if (userResponse.success) {
+            res.status(SERVER_OK).json(generateResponse(userResponse));
+          } else {
+            res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+          }
+        })
+        .catch((err: any) =>
+          res.status(SERVER_BAD_REQUEST).json({
+            success: false,
+            data: {
+              err,
+            },
+            message: 'someting went wrong while processing your request',
+          }),
+        );
     } else {
-      res.status(SERVER_BAD_REQUEST).json(result);
+      let userResponse = await userModel.userSignUp({
+        email,
+        username,
+        password,
+        fullName,
+        telephone,
+        location,
+        avatar: null,
+      });
+
+      if (userResponse.success) {
+        res.status(SERVER_OK).json(generateResponse(userResponse));
+      } else {
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+      }
     }
+    return;
   } catch (e) {
     res.status(SERVER_BAD_REQUEST).json(String(e));
     return;
@@ -78,9 +100,9 @@ async function signUp(req: Request, res: Response) {
 
 async function signIn(req: Request, res: Response) {
   try {
-    let { username, password } = req.body;
+    let { credential, password } = req.body;
 
-    if (!username || !password) {
+    if (!credential || !password) {
       res.status(SERVER_OK).json({
         success: false,
         data: {},
@@ -90,7 +112,7 @@ async function signIn(req: Request, res: Response) {
     }
 
     let result = await userModel.userSignIn({
-      username,
+      credential,
       password,
     });
 

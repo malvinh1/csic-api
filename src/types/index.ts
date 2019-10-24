@@ -1,14 +1,15 @@
 export type UserSignUp = {
   email: string;
   username: string;
-  full_name: string;
+  fullName: string;
   telephone: number;
   location: string;
   password: string;
+  avatar: string;
 };
 
 export type UserSignIn = {
-  username: string;
+  credential: string;
   password: string;
 };
 

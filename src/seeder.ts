@@ -8,7 +8,7 @@ export async function seeder(db: Client) {
     );
 
     db.query(
-      'CREATE TABLE posts(id SERIAL PRIMARY KEY, userid SERIAL REFERENCES users(id), itemname TEXT NOT NULL, imageurl TEXT, buydate DATE, expdate DATE, category VARCHAR(20), description TEXT, available BOOLEAN NOT NULL)',
+      'CREATE TABLE posts(id SERIAL PRIMARY KEY, user_id SERIAL REFERENCES users(id), item_name TEXT NOT NULL, image_url TEXT, buy_date DATE, exp_date DATE, category VARCHAR(20), description TEXT, available BOOLEAN NOT NULL)',
       (error: Error, results: QueryResult) => {},
     );
   } catch (e) {

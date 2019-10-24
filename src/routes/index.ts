@@ -1,13 +1,13 @@
 import { Router } from 'express';
 
-import authRouter from './authRouter';
-import featureRouter from './featureRouter';
+import authRoute from './authRoute';
+import featureRoute from './featureRoute';
 import controllers from '../controllers';
 
 const apiRouter = Router();
 
-apiRouter.use('/auth', authRouter);
-apiRouter.use('/feature', featureRouter);
+apiRouter.use('/auth', authRoute);
+apiRouter.use('/feature', featureRoute);
 apiRouter.all('*', controllers.error.getBadPath);
 
 export default apiRouter;

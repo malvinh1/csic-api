@@ -3,7 +3,7 @@ import sjcl from 'sjcl';
 import jwt from 'jsonwebtoken';
 
 import { getDB } from '../db';
-import { UserSignUp, UserSignIn } from '../types';
+import { UserSignUp, UserSignIn, ResponseObject } from '../types';
 import { API_SECRET } from '../constants';
 
 async function userSignUp(userObject: UserSignUp) {
@@ -12,10 +12,11 @@ async function userSignUp(userObject: UserSignUp) {
     let {
       email,
       username,
-      full_name,
+      fullName,
       telephone,
       location,
       password,
+      avatar,
     } = userObject;
 
     let hash = sjcl.codec.hex.fromBits(
@@ -27,11 +28,11 @@ async function userSignUp(userObject: UserSignUp) {
     let values = [
       email,
       username,
-      full_name,
+      fullName,
       encrypted,
       telephone,
       location,
-      null,
+      avatar,
       'Other',
     ];
 
@@ -42,21 +43,31 @@ async function userSignUp(userObject: UserSignUp) {
 
     let { id } = result.rows[0];
     let token = jwt.sign({ id }, API_SECRET);
-
-    return {
-      success: true,
-      data: {
-        id: result.rows[0].id,
-        email: result.rows[0].email,
-        username: result.rows[0].username,
-        full_name: result.rows[0].full_name,
-        telephone: result.rows[0].telephone,
-        location: result.rows[0].location,
-        avatar: result.rows[0].avatar,
-      },
-      message: `User ${full_name} has been added`,
-      token: token,
-    };
+    {
+      let {
+        id,
+        email,
+        username,
+        full_name: fullName,
+        telephone,
+        location,
+        avatar,
+      } = result.rows[0];
+      return {
+        success: true,
+        data: {
+          id,
+          email,
+          username,
+          fullName,
+          telephone,
+          location,
+          avatar,
+        },
+        message: `User ${fullName} has been added`,
+        token: token,
+      };
+    }
   } catch (e) {
     return {
       success: false,
@@ -69,37 +80,85 @@ async function userSignUp(userObject: UserSignUp) {
 async function userSignIn(userObject: UserSignIn) {
   try {
     let db = await getDB();
-    let { username, password } = userObject;
+    let { credential, password } = userObject;
 
     let hash = sjcl.codec.hex.fromBits(
       sjcl.hash.sha256.hash(password + 'CSIC'),
     );
+    let userResultEmail = await db.query(
+      'SELECT * FROM users where email = $1',
+      [credential],
+    );
 
-    let result = await db.query('SELECT * FROM users where username = $1', [
-      username,
-    ]);
+    let userResultUsername = await db.query(
+      'SELECT * FROM users where username = $1',
+      [credential],
+    );
 
-    if (result.rows[0]) {
-      let decrypted = sjcl.decrypt('CSIC', result.rows[0].password);
+    if (userResultEmail.rows[0]) {
+      let decrypted = sjcl.decrypt('CSIC', userResultEmail.rows[0].password);
       if (hash === decrypted) {
-        let { id } = result.rows[0];
+        let { id } = userResultEmail.rows[0];
 
         let token = jwt.sign({ id }, API_SECRET);
+        {
+          let {
+            id,
+            email,
+            username,
+            full_name: fullName,
+            telephone,
+            location,
+            avatar,
+          } = userResultEmail.rows[0];
+          return {
+            success: true,
+            data: {
+              id,
+              email,
+              username,
+              fullName,
+              telephone,
+              location,
+              avatar,
+            },
+            message: 'Login Success',
+            token: token,
+          };
+        }
+      }
+    }
+    if (userResultUsername.rows[0]) {
+      let decrypted = sjcl.decrypt('CSIC', userResultUsername.rows[0].password);
+      if (hash === decrypted) {
+        let { id } = userResultUsername.rows[0];
 
-        return {
-          success: true,
-          data: {
-            id: result.rows[0].id,
-            email: result.rows[0].email,
-            username: result.rows[0].username,
-            full_name: result.rows[0].full_name,
-            telephone: result.rows[0].telephone,
-            location: result.rows[0].location,
-            avatar: result.rows[0].avatar,
-          },
-          message: 'Login Success',
-          token: token,
-        };
+        let token = jwt.sign({ id }, API_SECRET);
+        {
+          let {
+            id,
+            email,
+            username,
+            full_name: fullName,
+            telephone,
+            location,
+            avatar,
+          } = userResultUsername.rows[0];
+          return {
+            success: true,
+            data: {
+              id,
+              email,
+              username,
+              fullName,
+              telephone,
+              location,
+              avatar,
+            },
+            message: 'Login Success',
+            token: token,
+          };
+        }
       }
     } else {
       return {
@@ -117,4 +176,48 @@ async function userSignIn(userObject: UserSignIn) {
   }
 }
 
-export default { userSignUp, userSignIn };
+async function getUserByEmail(email: string) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      'SELECT * FROM users where email = $1',
+      [email],
+    );
+    let response: ResponseObject = {
+      success: true,
+      data: user,
+      message: 'Successfully get user by its email',
+    };
+    return response;
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+async function getUserByUsername(username: string) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      'SELECT * FROM users where username = $1',
+      [username],
+    );
+    let response: ResponseObject = {
+      success: true,
+      data: user,
+      message: 'Successfully get user by its email',
+    };
+    return response;
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+export default { userSignUp, userSignIn, getUserByEmail, getUserByUsername };
