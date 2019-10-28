@@ -19,3 +19,8 @@ export type ResponseObject = {
   message: string;
   token?: string;
 };
+
+export type DecodedObject = {
+  id: number;
+  iat: number;
+};

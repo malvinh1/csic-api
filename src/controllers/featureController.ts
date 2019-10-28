@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
-import postModel from '../models/postModel';
 import { ResponseObject } from '../types';
 
 async function addPost(req: Request, res: Response) {

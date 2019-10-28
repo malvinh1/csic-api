@@ -55,15 +55,7 @@ async function userSignUp(userObject: UserSignUp) {
       } = result.rows[0];
       return {
         success: true,
-        data: {
-          id,
-          email,
-          username,
-          fullName,
-          telephone,
-          location,
-          avatar,
-        },
+        data: [id, email, username, fullName, telephone, location, avatar],
         message: `User ${fullName} has been added`,
         token: token,
       };
@@ -71,7 +63,7 @@ async function userSignUp(userObject: UserSignUp) {
   } catch (e) {
     return {
       success: false,
-      data: {},
+      data: [],
       message: String(e),
     };
   }
@@ -113,15 +105,7 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultEmail.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              fullName,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [id, email, username, fullName, telephone, location, avatar],
             message: 'Login Success',
             token: token,
           };
@@ -146,15 +130,7 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultUsername.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              fullName,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [id, email, username, fullName, telephone, location, avatar],
             message: 'Login Success',
             token: token,
           };
@@ -163,14 +139,14 @@ async function userSignIn(userObject: UserSignIn) {
     } else {
       return {
         success: false,
-        data: {},
+        data: [],
         message: 'Incorrect email or password.',
       };
     }
   } catch (e) {
     return {
       success: false,
-      data: {},
+      data: [],
       message: String(e),
     };
   }
@@ -220,4 +196,33 @@ async function getUserByUsername(username: string) {
   }
 }
 
-export default { userSignUp, userSignIn, getUserByEmail, getUserByUsername };
+async function getUserById(id: number) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      'SELECT * FROM users where id = $1',
+      [id],
+    );
+    delete user.rows[0].password;
+    let response: ResponseObject = {
+      success: true,
+      data: user.rows[0],
+      message: 'Successfully get user by Id',
+    };
+    return response;
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+export default {
+  userSignUp,
+  userSignIn,
+  getUserByEmail,
+  getUserByUsername,
+  getUserById,
+};
