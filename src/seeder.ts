@@ -1,6 +1,6 @@
-import { QueryResult, Client } from 'pg';
+import { QueryResult, Pool } from 'pg';
 
-export async function seeder(db: Client) {
+export async function seeder(db: Pool) {
   try {
     db.query(
       'create table users(id SERIAL PRIMARY KEY, email varchar(80) UNIQUE, username varchar(50) UNIQUE, full_name varchar(50), password text, telephone varchar(50), location varchar(50), avatar varchar(100), gender varchar(50), following TEXT[][], follower TEXT[][])',
