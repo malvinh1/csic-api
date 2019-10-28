@@ -25,13 +25,13 @@ async function connect() {
   try {
     let client = new Client(
       // comment this if you want to use heroku database <------
-      // localConfig,
+      localConfig,
 
       //comment this if you want to use localhost database <------
-      {
-        connectionString,
-        ssl: true,
-      },
+      // {
+      //   connectionString,
+      //   ssl: true,
+      // },
     );
     await client.connect();
     console.log('Database connected!');

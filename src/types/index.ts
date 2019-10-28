@@ -32,3 +32,12 @@ export type ReqEditProfileObject = {
   avatar: string;
   gender: 'Male' | 'Female' | 'Other';
 };
+
+export type PostRequestObject = {
+  itemName: string;
+  buyDate: string;
+  expDate: string;
+  category: string;
+  description: string;
+  tag: 'AVAILABLE' | 'EXPIRED' | 'UNAVAILABLE';
+};
