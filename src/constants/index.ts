@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-export const SERVER_PORT = Number(process.env.SERVER_PORT) || 3000;
+export const PORT = Number(process.env.PORT) || 4000;
 
 export const DB_USER = process.env.DB_USER;
 export const DB_HOST = process.env.DB_HOST;

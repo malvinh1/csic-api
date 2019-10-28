@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import apiRouter from './routes';
 
-import { SERVER_PORT, SERVER_OK } from './constants';
+import { PORT, SERVER_OK } from './constants';
 import { getDB } from './db';
 import { seeder } from './seeder';
 import { cloudinaryConfig } from './cloudinarySetup';
@@ -25,8 +25,8 @@ async function serverSetup() {
   app.on('listening', function() {
     console.log('server is running');
   });
-  app.listen(SERVER_PORT, () => {
-    console.log(`App is listening on http://127.0.0.1:${SERVER_PORT}`);
+  app.listen(PORT, () => {
+    console.log(`App is listening on http://127.0.0.1:${PORT}`);
   });
 }
 
