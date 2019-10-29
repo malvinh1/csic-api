@@ -3,7 +3,12 @@ import sjcl from 'sjcl';
 import jwt from 'jsonwebtoken';
 
 import { getDB } from '../db';
-import { UserSignUp, UserSignIn, ResponseObject } from '../types';
+import {
+  UserSignUp,
+  UserSignIn,
+  ResponseObject,
+  ReqEditProfileObject,
+} from '../types';
 import { API_SECRET } from '../constants';
 
 async function userSignUp(userObject: UserSignUp) {
@@ -55,15 +60,7 @@ async function userSignUp(userObject: UserSignUp) {
       } = result.rows[0];
       return {
         success: true,
-        data: {
-          id,
-          email,
-          username,
-          fullName,
-          telephone,
-          location,
-          avatar,
-        },
+        data: [{ id, email, username, fullName, telephone, location, avatar }],
         message: `User ${fullName} has been added`,
         token: token,
       };
@@ -71,7 +68,7 @@ async function userSignUp(userObject: UserSignUp) {
   } catch (e) {
     return {
       success: false,
-      data: {},
+      data: [],
       message: String(e),
     };
   }
@@ -113,15 +110,9 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultEmail.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              fullName,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [
+              { id, email, username, fullName, telephone, location, avatar },
+            ],
             message: 'Login Success',
             token: token,
           };
@@ -146,15 +137,9 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultUsername.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              fullName,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [
+              { id, email, username, fullName, telephone, location, avatar },
+            ],
             message: 'Login Success',
             token: token,
           };
@@ -163,14 +148,14 @@ async function userSignIn(userObject: UserSignIn) {
     } else {
       return {
         success: false,
-        data: {},
+        data: [],
         message: 'Incorrect email or password.',
       };
     }
   } catch (e) {
     return {
       success: false,
-      data: {},
+      data: [],
       message: String(e),
     };
   }
@@ -220,4 +205,53 @@ async function getUserByUsername(username: string) {
   }
 }
 
-export default { userSignUp, userSignIn, getUserByEmail, getUserByUsername };
+async function getUserById(id: number) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      'SELECT * FROM users where id = $1',
+      [id],
+    );
+    delete user.rows[0].password;
+    let response: ResponseObject = {
+      success: true,
+      data: user.rows[0],
+      message: 'Successfully get user by Id',
+    };
+    return response;
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+async function updateUser(editReq: ReqEditProfileObject, id: number) {
+  try {
+    let db = await getDB();
+    let { full_name, telephone, location, avatar, gender } = editReq;
+    await db.query(
+      'UPDATE users SET full_name = $1, telephone = $2, location = $3, avatar = $4, gender = $5 WHERE id=$6',
+      [full_name, telephone, location, avatar, gender, id],
+    );
+    let userData = await getUserById(id);
+    return {
+      success: true,
+      data: userData.data,
+      message: 'User profile has been changed',
+    };
+  } catch (e) {
+    return { success: false, data: [], message: String(e) };
+  }
+}
+
+export default {
+  userSignUp,
+  userSignIn,
+  getUserByEmail,
+  getUserByUsername,
+  getUserById,
+  updateUser,
+};

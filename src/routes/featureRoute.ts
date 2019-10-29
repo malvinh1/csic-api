@@ -3,12 +3,17 @@ import controllers from '../controllers';
 import middleware from '../middleware';
 
 const featureController = controllers.feature;
-const authRouter = Router();
+const featureRouter = Router();
 
-authRouter.post(
+featureRouter.post(
   '/add-post',
   middleware.multerUploads,
   featureController.addPost,
 );
+featureRouter.post(
+  '/edit-profile',
+  middleware.multerUploads,
+  featureController.editProfile,
+);
 
-export default authRouter;
+export default featureRouter;
