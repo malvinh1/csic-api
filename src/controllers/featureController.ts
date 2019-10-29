@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import { ResponseObject } from '../types';
-import { dataUri } from '../helpers';
+import { dataUri, generateResponse } from '../helpers';
 import { uploader } from '../cloudinarySetup';
 import userModel from '../models/userModel';
 
@@ -13,9 +13,9 @@ async function addPost(req: Request, res: Response) {
       message: '',
     };
     if (result.success) {
-      res.status(SERVER_OK).json(result);
+      res.status(SERVER_OK).json(generateResponse(result));
     } else {
-      res.status(SERVER_BAD_REQUEST).json(result);
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
     }
   } catch (e) {
     res.status(SERVER_BAD_REQUEST).json(String(e));
@@ -63,9 +63,9 @@ async function editProfile(req: Request, res: Response) {
             id,
           );
           if (result.success) {
-            res.status(SERVER_OK).json(result);
+            res.status(SERVER_OK).json(generateResponse(result));
           } else {
-            res.status(SERVER_BAD_REQUEST).json(result);
+            res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
           }
         })
         .catch((err: any) =>
@@ -82,9 +82,9 @@ async function editProfile(req: Request, res: Response) {
         id,
       );
       if (result.success) {
-        res.status(SERVER_OK).json(result);
+        res.status(SERVER_OK).json(generateResponse(result));
       } else {
-        res.status(SERVER_BAD_REQUEST).json(result);
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
       }
     }
   } catch (e) {

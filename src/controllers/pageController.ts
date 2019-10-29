@@ -2,8 +2,9 @@ import { Request, Response } from 'express';
 import userModel from '../models/userModel';
 import postModel from '../models/postModel';
 
-import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
+import { generateResponse } from '../helpers';
 import { ResponseObject } from '../types';
+import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 
 async function myProfile(req: Request, res: Response) {
   try {
@@ -12,20 +13,22 @@ async function myProfile(req: Request, res: Response) {
     let userResult: ResponseObject = await userModel.getUserById(id);
     let postResult: ResponseObject = await postModel.getPostByUserId(id);
     if (userResult.success && postResult.success) {
-      res.status(SERVER_OK).json({
-        success: true,
-        data: [
-          {
-            user: userResult.data,
-            post: postResult.data,
-          },
-        ],
-        message: 'Successfully retrieve my profile',
-      });
+      res.status(SERVER_OK).json(
+        generateResponse({
+          success: true,
+          data: [
+            {
+              user: userResult.data,
+              post: postResult.data,
+            },
+          ],
+          message: 'Successfully retrieve my profile',
+        }),
+      );
     } else if (!userResult) {
-      res.status(SERVER_BAD_REQUEST).json(userResult);
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(userResult));
     } else {
-      res.status(SERVER_BAD_REQUEST).json(postResult);
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(postResult));
     }
   } catch (e) {
     res.status(SERVER_BAD_REQUEST).json(String(e));
@@ -45,11 +48,12 @@ async function userProfile(req: Request, res: Response) {
       });
       return;
     }
+
     if (result.success) {
       result.message = 'Successfully retrieve user profile';
-      res.status(SERVER_OK).json(result);
+      res.status(SERVER_OK).json(generateResponse(result));
     } else {
-      res.status(SERVER_BAD_REQUEST).json(result);
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
     }
   } catch (e) {
     res.status(SERVER_BAD_REQUEST).json(String(e));
