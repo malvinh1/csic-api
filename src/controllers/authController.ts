@@ -105,7 +105,7 @@ async function signIn(req: Request, res: Response) {
     if (!credential || !password) {
       res.status(SERVER_OK).json({
         success: false,
-        data: {},
+        data: [],
         message: 'Please fill all required fields',
       });
       return;

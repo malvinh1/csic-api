@@ -1,7 +1,7 @@
 export type UserSignUp = {
   email: string;
   username: string;
-  fullName: string;
+  full_name: string;
   telephone: number;
   location: string;
   password: string;
@@ -18,4 +18,26 @@ export type ResponseObject = {
   data: any;
   message: string;
   token?: string;
+};
+
+export type DecodedObject = {
+  id: number;
+  iat: number;
+};
+
+export type ReqEditProfileObject = {
+  full_name: string;
+  telephone: string;
+  location: string;
+  avatar: string;
+  gender: 'Male' | 'Female' | 'Other';
+};
+
+export type PostRequestObject = {
+  item_name: string;
+  buy_date: string;
+  exp_date: string;
+  category: string;
+  description: string;
+  tag: 'AVAILABLE' | 'EXPIRED' | 'UNAVAILABLE';
 };
