@@ -3,15 +3,15 @@ import { QueryResult } from 'pg';
 import { ResponseObject, PostRequestObject } from '../types';
 
 async function insertPost(
-  postObject: { id: string; imageUrl: string } & PostRequestObject,
+  postObject: { id: string; image_url: string } & PostRequestObject,
 ) {
   try {
     let {
       id,
-      itemName,
-      imageUrl,
-      buyDate,
-      expDate,
+      item_name,
+      image_url,
+      buy_date,
+      exp_date,
       category,
       description,
       tag,
@@ -19,10 +19,10 @@ async function insertPost(
     let db = await getDB();
     let valueQuery = [
       id,
-      itemName,
-      imageUrl,
-      buyDate,
-      expDate,
+      item_name,
+      image_url,
+      buy_date,
+      exp_date,
       category,
       description,
       tag,

@@ -11,9 +11,9 @@ async function addPost(req: Request, res: Response) {
     let decoded = (<any>req).decoded;
     let { id: userID } = decoded;
     let {
-      itemName,
-      buyDate,
-      expDate,
+      item_name,
+      buy_date,
+      exp_date,
       category,
       description,
       tag,
@@ -23,13 +23,13 @@ async function addPost(req: Request, res: Response) {
       return uploader
         .upload(file)
         .then(async (result: any) => {
-          let imageUrl = result.url;
+          let image_url = result.url;
           let insertResponse: ResponseObject = await postModel.insertPost({
             id: userID,
-            imageUrl,
-            itemName,
-            buyDate,
-            expDate,
+            image_url,
+            item_name,
+            buy_date,
+            exp_date,
             category,
             description,
             tag,
@@ -49,7 +49,7 @@ async function addPost(req: Request, res: Response) {
             data: {
               err,
             },
-            message: 'someting went wrong while processing your request',
+            message: 'Something Went Wrong While Processing Your Request',
           }),
         );
     } else {
