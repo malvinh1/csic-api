@@ -33,4 +33,27 @@ async function myProfile(req: Request, res: Response) {
   }
 }
 
-export default { myProfile };
+async function userProfile(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    let result: ResponseObject = await userModel.getUserById(Number(id));
+    if (!result) {
+      res.status(SERVER_OK).json({
+        success: false,
+        data: [],
+        message: 'User is not exist',
+      });
+      return;
+    }
+    if (result.success) {
+      result.message = 'Successfully retrieve user profile';
+      res.status(SERVER_OK).json(result);
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(result);
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+export default { myProfile, userProfile };
