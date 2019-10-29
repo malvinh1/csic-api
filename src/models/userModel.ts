@@ -60,15 +60,17 @@ async function userSignUp(userObject: UserSignUp) {
       } = result.rows[0];
       return {
         success: true,
-        data: {
-          id,
-          email,
-          username,
-          full_name,
-          telephone,
-          location,
-          avatar,
-        },
+        data: [
+          {
+            id,
+            email,
+            username,
+            full_name,
+            telephone,
+            location,
+            avatar,
+          },
+        ],
         message: `User ${full_name} has been added`,
         token: token,
       };
@@ -118,15 +120,17 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultEmail.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              full_name,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [
+              {
+                id,
+                email,
+                username,
+                full_name,
+                telephone,
+                location,
+                avatar,
+              },
+            ],
             message: 'Login Success',
             token: token,
           };
@@ -151,15 +155,17 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultUsername.rows[0];
           return {
             success: true,
-            data: {
-              id,
-              email,
-              username,
-              full_name,
-              telephone,
-              location,
-              avatar,
-            },
+            data: [
+              {
+                id,
+                email,
+                username,
+                full_name,
+                telephone,
+                location,
+                avatar,
+              },
+            ],
             message: 'Login Success',
             token: token,
           };
