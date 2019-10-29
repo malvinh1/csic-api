@@ -24,3 +24,11 @@ export type DecodedObject = {
   id: number;
   iat: number;
 };
+
+export type ReqEditProfileObject = {
+  full_name: string;
+  telephone: string;
+  location: string;
+  avatar: string;
+  gender: 'Male' | 'Female' | 'Other';
+};

@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 function getBadPath(req: Request, res: Response) {
   res.status(SERVER_NOT_FOUND).json({
     success: false,
-    data: {},
+    data: [],
     message: 'NOT FOUND',
   });
 }

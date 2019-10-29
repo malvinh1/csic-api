@@ -19,13 +19,13 @@ let checkToken = (req: Request, res: Response, next: NextFunction) => {
           ) {
             return res.json({
               success: false,
-              data: {},
+              data: [],
               message: 'Token is not valid',
             });
           } else if (err.message === 'jwt expired') {
             return res.json({
               success: false,
-              data: {},
+              data: [],
               message: 'Token is expired',
             });
           }
@@ -37,14 +37,14 @@ let checkToken = (req: Request, res: Response, next: NextFunction) => {
     } else {
       return res.json({
         success: false,
-        data: {},
+        data: [],
         message: 'Auth token is not supplied',
       });
     }
   } catch (e) {
     return res.json({
       success: false,
-      data: {},
+      data: [],
       message: 'Token is not valid',
     });
   }

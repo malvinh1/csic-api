@@ -3,7 +3,12 @@ import sjcl from 'sjcl';
 import jwt from 'jsonwebtoken';
 
 import { getDB } from '../db';
-import { UserSignUp, UserSignIn, ResponseObject } from '../types';
+import {
+  UserSignUp,
+  UserSignIn,
+  ResponseObject,
+  ReqEditProfileObject,
+} from '../types';
 import { API_SECRET } from '../constants';
 
 async function userSignUp(userObject: UserSignUp) {
@@ -219,10 +224,30 @@ async function getUserById(id: number) {
   }
 }
 
+async function updateUser(editReq: ReqEditProfileObject, id: number) {
+  try {
+    let db = await getDB();
+    let { full_name, telephone, location, avatar, gender } = editReq;
+    await db.query(
+      'UPDATE users SET full_name = $1, telephone = $2, location = $3, avatar = $4, gender = $5 WHERE id=$6',
+      [full_name, telephone, location, avatar, gender, id],
+    );
+    let userData = await getUserById(id);
+    return {
+      success: true,
+      data: userData.data,
+      message: 'User profile has been changed',
+    };
+  } catch (e) {
+    return { success: false, data: [], message: String(e) };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
   getUserByEmail,
   getUserByUsername,
   getUserById,
+  updateUser,
 };
