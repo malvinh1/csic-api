@@ -21,7 +21,7 @@ async function getPostByUserId(user_id: number) {
     let response: ResponseObject = {
       success: true,
       data: post.rows,
-      message: 'Successfully get post by userId',
+      message: 'Successfully get post by user_id',
     };
     return response;
   } catch (e) {

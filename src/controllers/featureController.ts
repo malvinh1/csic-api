@@ -69,8 +69,8 @@ async function editProfile(req: Request, res: Response) {
         .catch((err: any) =>
           res.status(SERVER_BAD_REQUEST).json({
             success: false,
-            data: [err],
-            message: 'Someting went wrong while processing your request',
+            data: [{ err }],
+            message: 'Something went wrong while processing your request',
           }),
         );
     } else {

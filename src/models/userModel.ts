@@ -60,7 +60,7 @@ async function userSignUp(userObject: UserSignUp) {
       } = result.rows[0];
       return {
         success: true,
-        data: [id, email, username, fullName, telephone, location, avatar],
+        data: [{ id, email, username, fullName, telephone, location, avatar }],
         message: `User ${fullName} has been added`,
         token: token,
       };
@@ -110,7 +110,9 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultEmail.rows[0];
           return {
             success: true,
-            data: [id, email, username, fullName, telephone, location, avatar],
+            data: [
+              { id, email, username, fullName, telephone, location, avatar },
+            ],
             message: 'Login Success',
             token: token,
           };
@@ -135,7 +137,9 @@ async function userSignIn(userObject: UserSignIn) {
           } = userResultUsername.rows[0];
           return {
             success: true,
-            data: [id, email, username, fullName, telephone, location, avatar],
+            data: [
+              { id, email, username, fullName, telephone, location, avatar },
+            ],
             message: 'Login Success',
             token: token,
           };
