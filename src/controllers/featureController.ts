@@ -1,12 +1,67 @@
 import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
-import { ResponseObject } from '../types';
-import { dataUri, generateResponse } from '../helpers';
-import { uploader } from '../cloudinarySetup';
 import userModel from '../models/userModel';
+import postModel from '../models/postModel';
+import { ResponseObject, PostRequestObject } from '../types';
+import { generateResponse, dataUri } from '../helpers';
+import { uploader } from '../cloudinarySetup';
 
 async function addPost(req: Request, res: Response) {
   try {
+    let decoded = (<any>req).decoded;
+    let { id: userID } = decoded;
+    let {
+      item_name,
+      buy_date,
+      exp_date,
+      category,
+      description,
+      tag,
+    }: PostRequestObject = req.body;
+    if (req.file) {
+      const file = dataUri(req).content;
+      return uploader
+        .upload(file)
+        .then(async (result: any) => {
+          let image_url = result.url;
+          let insertResponse: ResponseObject = await postModel.insertPost({
+            id: userID,
+            image_url,
+            item_name,
+            buy_date,
+            exp_date,
+            category,
+            description,
+            tag,
+          });
+
+          if (insertResponse.success) {
+            res.status(SERVER_OK).json(generateResponse(insertResponse));
+          } else {
+            res
+              .status(SERVER_BAD_REQUEST)
+              .json(generateResponse(insertResponse));
+          }
+        })
+        .catch((err: any) =>
+          res.status(SERVER_BAD_REQUEST).json({
+            success: false,
+            data: {
+              err,
+            },
+            message: 'Something Went Wrong While Processing Your Request',
+          }),
+        );
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(
+        generateResponse({
+          success: false,
+          data: [],
+          message: 'Please fill all required fields',
+        }),
+      );
+    }
+
     let result: ResponseObject = {
       success: true,
       data: [],

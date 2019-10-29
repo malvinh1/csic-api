@@ -1,7 +1,7 @@
 export type UserSignUp = {
   email: string;
   username: string;
-  fullName: string;
+  full_name: string;
   telephone: number;
   location: string;
   password: string;
@@ -31,4 +31,13 @@ export type ReqEditProfileObject = {
   location: string;
   avatar: string;
   gender: 'Male' | 'Female' | 'Other';
+};
+
+export type PostRequestObject = {
+  item_name: string;
+  buy_date: string;
+  exp_date: string;
+  category: string;
+  description: string;
+  tag: 'AVAILABLE' | 'EXPIRED' | 'UNAVAILABLE';
 };

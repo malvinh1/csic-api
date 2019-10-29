@@ -17,7 +17,7 @@ async function userSignUp(userObject: UserSignUp) {
     let {
       email,
       username,
-      fullName,
+      full_name,
       telephone,
       location,
       password,
@@ -33,7 +33,7 @@ async function userSignUp(userObject: UserSignUp) {
     let values = [
       email,
       username,
-      fullName,
+      full_name,
       encrypted,
       telephone,
       location,
@@ -53,15 +53,25 @@ async function userSignUp(userObject: UserSignUp) {
         id,
         email,
         username,
-        full_name: fullName,
+        full_name,
         telephone,
         location,
         avatar,
       } = result.rows[0];
       return {
         success: true,
-        data: [{ id, email, username, fullName, telephone, location, avatar }],
-        message: `User ${fullName} has been added`,
+        data: [
+          {
+            id,
+            email,
+            username,
+            full_name,
+            telephone,
+            location,
+            avatar,
+          },
+        ],
+        message: `User ${full_name} has been added`,
         token: token,
       };
     }
@@ -103,7 +113,7 @@ async function userSignIn(userObject: UserSignIn) {
             id,
             email,
             username,
-            full_name: fullName,
+            full_name,
             telephone,
             location,
             avatar,
@@ -111,7 +121,15 @@ async function userSignIn(userObject: UserSignIn) {
           return {
             success: true,
             data: [
-              { id, email, username, fullName, telephone, location, avatar },
+              {
+                id,
+                email,
+                username,
+                full_name,
+                telephone,
+                location,
+                avatar,
+              },
             ],
             message: 'Login Success',
             token: token,
@@ -130,7 +148,7 @@ async function userSignIn(userObject: UserSignIn) {
             id,
             email,
             username,
-            full_name: fullName,
+            full_name,
             telephone,
             location,
             avatar,
@@ -138,7 +156,15 @@ async function userSignIn(userObject: UserSignIn) {
           return {
             success: true,
             data: [
-              { id, email, username, fullName, telephone, location, avatar },
+              {
+                id,
+                email,
+                username,
+                full_name,
+                telephone,
+                location,
+                avatar,
+              },
             ],
             message: 'Login Success',
             token: token,

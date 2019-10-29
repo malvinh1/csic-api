@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import apiRouter from './routes';
 
-import { SERVER_PORT } from './constants';
+import { PORT, SERVER_OK } from './constants';
 import { getDB } from './db';
 import { seeder } from './seeder';
 import { cloudinaryConfig } from './cloudinarySetup';
@@ -17,10 +17,16 @@ async function serverSetup() {
   app.locals.db = await getDB();
   await seeder(app.locals.db);
   app.use('*', cloudinaryConfig);
-  app.get('/', (req: Request, res: Response) => res.send('Welcome Home!'));
+  app.get('/', (req, res) => {
+    res.status(SERVER_OK);
+    res.send('Welcome Home.');
+  });
   app.use('/api', apiRouter);
-  app.listen(SERVER_PORT, () => {
-    console.log(`App is listening on http://127.0.0.1:${SERVER_PORT}`);
+  app.on('listening', function() {
+    console.log('server is running');
+  });
+  app.listen(PORT, () => {
+    console.log(`App is listening on http://127.0.0.1:${PORT}`);
   });
 }
 

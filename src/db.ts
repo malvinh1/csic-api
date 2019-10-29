@@ -1,4 +1,4 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 
 import {
   DB_PORT,
@@ -9,7 +9,7 @@ import {
   DATABASE_URL,
 } from './constants';
 
-let db: Promise<Client> | undefined;
+let db: Promise<Pool> | undefined;
 
 const connectionString = DATABASE_URL;
 
@@ -23,7 +23,7 @@ let localConfig = {
 
 async function connect() {
   try {
-    let client = new Client(
+    let client = new Pool(
       // comment this if you want to use heroku database <------
       localConfig,
 
