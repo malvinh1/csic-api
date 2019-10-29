@@ -51,8 +51,6 @@ async function editProfile(req: Request, res: Response) {
     gender = gender ? gender : user.data.gender;
 
     if (req.file) {
-      console.log('masuk sampai sini');
-      console.log('full name di dalam if', full_name);
       const file = dataUri(req).content;
       return uploader
         .upload(file)
