@@ -18,8 +18,7 @@ This is CSIC API made for Cibo APP!
 | image_url | string | Cloudinary URL for storing item's image |
 | buy_date  | Date | Date at time |
 | exp_date  | Date | Auto generated Serial by postgreSQL |
-| category  | Date | category which this item belongs to |
-| buy_date  | Date | Auto generated Serial by postgreSQL |
+| category  | string | category which this item belongs to |
 | description  | string | Details about the item |
 | tag  | string | 'AVAILABLE', 'UNAVAILABLE', 'EXPIRED' |
 
@@ -37,16 +36,16 @@ This is CSIC API made for Cibo APP!
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | id  | number | Auto generated Serial by postgreSQL |
-| email | string UNIQUE | For future purpose verification, forgot password, anti-spam | -> can change
-| username | string UNIQUE | username of account which has passed frontend verification |
+| email | string | For future purpose verification, forgot password, anti-spam | -> can change
+| username | string | username of account which has passed frontend verification |
 | full_name | string | Name for Account identifier |
 | password | string | password of account which has passed frontend verification, Hash(password+salt) |
 | telephone | string | Number of phone that can be called  |
 | location | string | Places the user live in |
 | avatar | string | Cloudinary URL |
 | gender | string | 'MALE', 'FEMALE', 'OTHER' |
-| following | Array<number> | List of whoever this user follow |
-| follower | Array<number> | List of whoever follows this user |
+| following | Array<number> | List of userId whoever this user follow |
+| follower | Array<number> | List of userId whoever follows this user |
 
 <br/>
   
