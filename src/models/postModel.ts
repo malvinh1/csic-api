@@ -3,7 +3,11 @@ import { QueryResult } from 'pg';
 import { ResponseObject, PostRequestObject } from '../types';
 
 async function insertPost(
-  postObject: { id: string; image_url: string } & PostRequestObject,
+  postObject: {
+    id: string;
+    image_url: string;
+    timestamp: number;
+  } & PostRequestObject,
 ) {
   try {
     let {
@@ -15,6 +19,7 @@ async function insertPost(
       category,
       description,
       tag,
+      timestamp,
     } = postObject;
     let db = await getDB();
     let valueQuery = [
@@ -26,10 +31,11 @@ async function insertPost(
       category,
       description,
       tag,
+      timestamp,
     ];
 
     let insertResult: QueryResult = await db.query(
-      'INSERT INTO posts (user_id, item_name, image_url, buy_date, exp_date, category, description, tag) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      'INSERT INTO posts (user_id, item_name, image_url, buy_date, exp_date, category, description, tag, timestamp) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
       valueQuery,
     );
 
