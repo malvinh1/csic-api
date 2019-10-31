@@ -24,6 +24,7 @@ async function addPost(req: Request, res: Response) {
         .upload(file)
         .then(async (result: any) => {
           let image_url = result.url;
+          let timestamp = Date.now();
           let insertResponse: ResponseObject = await postModel.insertPost({
             id: userID,
             image_url,
@@ -33,6 +34,7 @@ async function addPost(req: Request, res: Response) {
             category,
             description,
             tag,
+            timestamp,
           });
 
           if (insertResponse.success) {

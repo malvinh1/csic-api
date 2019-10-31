@@ -7,7 +7,14 @@ import { generateResponse, dataUri } from '../helpers';
 
 async function signUp(req: Request, res: Response) {
   try {
-    let { email, username, password, fullName, telephone, location } = req.body;
+    let {
+      email,
+      username,
+      password,
+      full_name,
+      telephone,
+      location,
+    } = req.body;
     if (!email || !username || !password) {
       res.status(SERVER_OK).json({
         success: false,
@@ -53,7 +60,7 @@ async function signUp(req: Request, res: Response) {
             email,
             username,
             password,
-            fullName,
+            full_name,
             telephone,
             location,
             avatar,
@@ -79,7 +86,7 @@ async function signUp(req: Request, res: Response) {
         email,
         username,
         password,
-        fullName,
+        full_name,
         telephone,
         location,
         avatar: null,
