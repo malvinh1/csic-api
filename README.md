@@ -40,7 +40,7 @@ This is CSIC API made for Cibo APP!
 | username | string | username of account which has passed frontend verification |
 | full_name | string | Name for Account identifier |
 | password | string | password of account which has passed frontend verification, Hash(password+salt) |
-| telephone | string | Number of phone that can be called  |
+| phone_number | string | Number of phone that can be called  |
 | location | string | Places the user live in |
 | avatar | string | Cloudinary URL |
 | gender | string | 'MALE', 'FEMALE', 'OTHER' |
@@ -71,7 +71,7 @@ Request Body
   username: string,
   password: string, *checked before go to server min. 6 char, etc.
   full_name: string,
-  telephone: string,
+  phone_number: string,
   location: string,
   image: string, *optional
 }
@@ -87,7 +87,7 @@ Response Value
       email : string,
       username : string,
       full_name : string,
-      telephone: string,
+      phone_number: string,
       location: string,
       avatar: string | null,
     }
@@ -129,7 +129,7 @@ Response Value
       email : string,
       username : string,
       full_name : string,
-      telephone: string,
+      phone_number: string,
       location: string,
       avatar: string | null,
     }
