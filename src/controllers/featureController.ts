@@ -29,8 +29,10 @@ async function addPost(req: Request, res: Response) {
             id: userID,
             image_url,
             item_name,
-            buy_date,
-            exp_date,
+            buy_date:
+              buy_date && buy_date != '' && buy_date != null ? buy_date : null,
+            exp_date:
+              exp_date && buy_date != '' && exp_date != null ? exp_date : null,
             category,
             description,
             tag,
@@ -83,8 +85,8 @@ async function addPost(req: Request, res: Response) {
 async function editProfile(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
-    let { full_name, telephone, location, gender } = req.body;
-    if (!full_name && !telephone && !location && !gender && !req.file) {
+    let { full_name, phone_number, location, gender } = req.body;
+    if (!full_name && !phone_number && !location && !gender && !req.file) {
       res.status(SERVER_OK).json({
         success: false,
         data: [],
@@ -103,7 +105,7 @@ async function editProfile(req: Request, res: Response) {
       return;
     }
     full_name = full_name ? full_name : user.data.full_name;
-    telephone = telephone ? telephone : user.data.telephone;
+    phone_number = phone_number ? phone_number : user.data.phone_number;
     location = location ? location : user.data.location;
     gender = gender ? gender : user.data.gender;
 
@@ -114,7 +116,7 @@ async function editProfile(req: Request, res: Response) {
         .then(async (db_result: any) => {
           let avatar = db_result.url;
           let result: ResponseObject = await userModel.updateUser(
-            { full_name, telephone, location, avatar, gender },
+            { full_name, phone_number, location, avatar, gender },
             id,
           );
           if (result.success) {
@@ -133,7 +135,7 @@ async function editProfile(req: Request, res: Response) {
     } else {
       let avatar = user.data.avatar;
       let result: ResponseObject = await userModel.updateUser(
-        { full_name, telephone, location, avatar, gender },
+        { full_name, phone_number, location, avatar, gender },
         id,
       );
       if (result.success) {

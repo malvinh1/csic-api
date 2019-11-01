@@ -18,7 +18,7 @@ async function userSignUp(userObject: UserSignUp) {
       email,
       username,
       full_name,
-      telephone,
+      phone_number,
       location,
       password,
       avatar,
@@ -35,7 +35,7 @@ async function userSignUp(userObject: UserSignUp) {
       username,
       full_name,
       encrypted,
-      telephone,
+      phone_number,
       location,
       avatar,
       'Other',
@@ -44,7 +44,7 @@ async function userSignUp(userObject: UserSignUp) {
     ];
 
     let result: QueryResult = await db.query(
-      'INSERT INTO users (email, username, full_name, password, telephone, location, avatar, gender, following, follower) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+      'INSERT INTO users (email, username, full_name, password, phone_number, location, avatar, gender, following, follower) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
       values,
     );
 
@@ -201,10 +201,10 @@ async function getUserById(id: number) {
 async function updateUser(editReq: ReqEditProfileObject, id: number) {
   try {
     let db = await getDB();
-    let { full_name, telephone, location, avatar, gender } = editReq;
+    let { full_name, phone_number, location, avatar, gender } = editReq;
     await db.query(
-      'UPDATE users SET full_name = $1, telephone = $2, location = $3, avatar = $4, gender = $5 WHERE id=$6',
-      [full_name, telephone, location, avatar, gender, id],
+      'UPDATE users SET full_name = $1, phone_number = $2, location = $3, avatar = $4, gender = $5 WHERE id=$6',
+      [full_name, phone_number, location, avatar, gender, id],
     );
     let userData = await getUserById(id);
     return {
