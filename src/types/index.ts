@@ -2,7 +2,7 @@ export type UserSignUp = {
   email: string;
   username: string;
   full_name: string;
-  telephone: number;
+  phone_number: number;
   location: string;
   password: string;
   avatar: string;
@@ -27,7 +27,7 @@ export type DecodedObject = {
 
 export type ReqEditProfileObject = {
   full_name: string;
-  telephone: string;
+  phone_number: string;
   location: string;
   avatar: string;
   gender: 'Male' | 'Female' | 'Other';

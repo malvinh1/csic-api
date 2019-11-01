@@ -12,7 +12,7 @@ async function signUp(req: Request, res: Response) {
       username,
       password,
       full_name,
-      telephone,
+      phone_number,
       location,
     } = req.body;
     if (!email || !username || !password) {
@@ -61,7 +61,7 @@ async function signUp(req: Request, res: Response) {
             username,
             password,
             full_name,
-            telephone,
+            phone_number,
             location,
             avatar,
           });
@@ -87,7 +87,7 @@ async function signUp(req: Request, res: Response) {
         username,
         password,
         full_name,
-        telephone,
+        phone_number,
         location,
         avatar: null,
       });
