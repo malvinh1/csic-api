@@ -39,38 +39,22 @@ async function userSignUp(userObject: UserSignUp) {
       location,
       avatar,
       'Other',
+      [],
+      [],
     ];
 
     let result: QueryResult = await db.query(
-      'INSERT INTO users (email, username, full_name, password, telephone, location, avatar, gender) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      'INSERT INTO users (email, username, full_name, password, telephone, location, avatar, gender, following, follower) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
       values,
     );
 
     let { id } = result.rows[0];
+    delete result.rows[0].password;
     let token = jwt.sign({ id }, API_SECRET);
     {
-      let {
-        id,
-        email,
-        username,
-        full_name,
-        telephone,
-        location,
-        avatar,
-      } = result.rows[0];
       return {
         success: true,
-        data: [
-          {
-            id,
-            email,
-            username,
-            full_name,
-            telephone,
-            location,
-            avatar,
-          },
-        ],
+        data: result.rows[0],
         message: `User ${full_name} has been added`,
         token: token,
       };
@@ -106,31 +90,12 @@ async function userSignIn(userObject: UserSignIn) {
       let decrypted = sjcl.decrypt('CSIC', userResultEmail.rows[0].password);
       if (hash === decrypted) {
         let { id } = userResultEmail.rows[0];
-
+        delete userResultEmail.rows[0].password;
         let token = jwt.sign({ id }, API_SECRET);
         {
-          let {
-            id,
-            email,
-            username,
-            full_name,
-            telephone,
-            location,
-            avatar,
-          } = userResultEmail.rows[0];
           return {
             success: true,
-            data: [
-              {
-                id,
-                email,
-                username,
-                full_name,
-                telephone,
-                location,
-                avatar,
-              },
-            ],
+            data: userResultEmail.rows[0],
             message: 'Login Success',
             token: token,
           };
@@ -141,35 +106,14 @@ async function userSignIn(userObject: UserSignIn) {
       let decrypted = sjcl.decrypt('CSIC', userResultUsername.rows[0].password);
       if (hash === decrypted) {
         let { id } = userResultUsername.rows[0];
-
+        delete userResultUsername.rows[0].password;
         let token = jwt.sign({ id }, API_SECRET);
-        {
-          let {
-            id,
-            email,
-            username,
-            full_name,
-            telephone,
-            location,
-            avatar,
-          } = userResultUsername.rows[0];
-          return {
-            success: true,
-            data: [
-              {
-                id,
-                email,
-                username,
-                full_name,
-                telephone,
-                location,
-                avatar,
-              },
-            ],
-            message: 'Login Success',
-            token: token,
-          };
-        }
+        return {
+          success: true,
+          data: userResultUsername.rows[0],
+          message: 'Login Success',
+          token: token,
+        };
       }
     } else {
       return {

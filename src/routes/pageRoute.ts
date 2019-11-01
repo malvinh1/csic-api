@@ -7,5 +7,6 @@ const pageRouter = Router();
 
 pageRouter.get('/profile', pageController.myProfile);
 pageRouter.get('/profile/:id', pageController.userProfile);
+pageRouter.get('/home', pageController.home);
 
 export default pageRouter;

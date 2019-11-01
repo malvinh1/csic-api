@@ -60,12 +60,11 @@ async function getPostByUserId(user_id: number) {
       'SELECT * FROM posts where user_id = $1',
       [user_id],
     );
-    let response: ResponseObject = {
+    return {
       success: true,
       data: post.rows,
       message: 'Successfully get post by user_id',
     };
-    return response;
   } catch (e) {
     return {
       success: false,
