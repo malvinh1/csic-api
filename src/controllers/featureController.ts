@@ -29,8 +29,10 @@ async function addPost(req: Request, res: Response) {
             id: userID,
             image_url,
             item_name,
-            buy_date,
-            exp_date,
+            buy_date:
+              buy_date && buy_date != '' && buy_date != null ? buy_date : null,
+            exp_date:
+              exp_date && buy_date != '' && exp_date != null ? exp_date : null,
             category,
             description,
             tag,
