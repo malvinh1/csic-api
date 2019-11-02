@@ -14,24 +14,24 @@
 | Name        | Type   | Description                             |
 | ----------- | ------ | --------------------------------------- |
 | id          | int4   | Auto generated Serial by postgreSQL     |
-| user_id     | int4   | Referenced to users(id)                 |
-| item_name   | int4   | Name of the item or brand it has        |
+| user_id     | int4   | Reference to users(id)                  |
+| item_name   | string | Name or brand of the item               |
 | image_url   | string | Cloudinary URL for storing item's image |
 | buy_date    | Date   | Date at time                            |
 | exp_date    | Date   | Auto generated Serial by postgreSQL     |
-| category    | string | category which this item belongs to     |
+| category    | string | Category which this item belongs to     |
 | description | string | Details about the item                  |
 | tag         | string | 'AVAILABLE', 'UNAVAILABLE', 'EXPIRED'   |
 | timestamp   | bigint | Auto generated timestamp                |
 
 ### requests
 
-| Name         | Type | Description                                          |
-| ------------ | ---- | ---------------------------------------------------- |
-| id           | int4 | Auto generated Serial by postgreSQL                  |
-| user_id      | int4 | Referenced to users(id) whose get the request        |
-| requester_id | int4 | Referenced to users(id) whose request the item       |
-| post_id      | int4 | Referenced to posts(id) which item that is requested |
+| Name         | Type | Description                                         |
+| ------------ | ---- | --------------------------------------------------- |
+| id           | int4 | Auto generated Serial by postgreSQL                 |
+| user_id      | int4 | Reference to users(id) whose get the request        |
+| requester_id | int4 | Reference to users(id) whose request the item       |
+| post_id      | int4 | Reference to posts(id) which item that is requested |
 
 ### users
 
@@ -39,13 +39,13 @@
 | ------------ | ----------- | ------------------------------------------------------------------------------- |
 | id           | number      | Auto generated Serial by postgreSQL                                             |
 | email        | string      | For future purpose verification, forgot password, anti-spam                     | -> can change |
-| username     | string      | username of account which has passed frontend verification                      |
+| username     | string      | Username of account which has passed frontend verification                      |
 | full_name    | string      | Name for Account identifier                                                     |
 | password     | string      | password of account which has passed frontend verification, Hash(password+salt) |
 | phone_number | string      | Number of phone that can be called                                              |
 | location     | string      | Places the user live in                                                         |
 | avatar       | string      | Cloudinary URL                                                                  |
-| gender       | string      | 'MALE', 'FEMALE', 'OTHER'                                                       |
+| gender       | string      | 'Male', 'Female', 'Other'                                                       |
 | following    | Array[{id}] | List of userId whoever this user follow                                         |
 | follower     | Array[{id}] | List of userId whoever follows this user                                        |
 
@@ -96,7 +96,7 @@ Content-Type: multipart/form-data
       phone_number: string,
       location: string,
       avatar: string | null,
-      gender: string (MALE, FEMALE, OTHER),
+      gender: string \* 'Male', 'Female', 'Other',
       following: [{id}],
       follower: [{id}],
     }
@@ -145,7 +145,7 @@ password: string,
       phone_numbe: string,
       location: string,
       avatar: string | null,
-      gender: string (MALE, FEMALE, OTHER),
+      gender: string \* 'Male', 'Female', 'Other',
       following: [{id}],
       follower: [{id}],
     }
@@ -190,7 +190,7 @@ Content-Type: application/json
       exp_date: string,
       category: string,
       description: string,
-      tag: string,
+      tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
       timestamp: string,
       username: string,
       full_name: string,
@@ -234,7 +234,7 @@ Content-Type: application/json
         telephone: string,
         location: string,
         avatar: string | null,
-        gender: string (MALE, FEMALE, OTHER),
+        gender: string \* 'Male', 'Female', 'Other',
         following: Array[{id}],
         follower: Array[{id}]
       }
@@ -245,7 +245,6 @@ Content-Type: application/json
         user_id: number,
         item_name: string,
         image_url: string,
-        item_name: string,
         buy_date: string, \*YYYY-MM-DD
         exp_date: string, \*YYYY-MM-DD
         category: string,
@@ -292,7 +291,7 @@ Content-Type: application/json
         telephone: string,
         location: string,
         avatar: string | null,
-        gender: string (MALE, FEMALE, OTHER),
+        gender: string \* 'Male', 'Female', 'Other',
         following: Array[{id}],
         follower: Array[{id}]
       }
@@ -303,12 +302,11 @@ Content-Type: application/json
         user_id: number,
         item_name: string,
         image_url: string,
-        item_name: string,
         buy_date: string, \*YYYY-MM-DD
         exp_date: string, \*YYYY-MM-DD
         category: string,
         description: string,
-        tag: string, \*'AVAILABLE' OR 'EXPIRED',
+        tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
         timestamp: string
       }
      ]
@@ -349,7 +347,7 @@ authorization : <token app get when login>
   exp_date: string, \*YYYY-MM-DD
   category: string,
   description: string,
-  tag: string, \*'AVAILABLE' OR 'EXPIRED'
+  tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
 }
 ```
 
@@ -364,12 +362,11 @@ authorization : <token app get when login>
       user_id: number,
       item_name: string,
       image_url: string,
-      item_name: string,
       buy_date: string, \*YYYY-MM-DD
       exp_date: string, \*YYYY-MM-DD
       category: string,
       description: string,
-      tag: string, \*'AVAILABLE' OR 'EXPIRED',
+      tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
       timestamp: string,
     }
   ],
@@ -402,7 +399,7 @@ authorization : <token app get when login>
   full_name: string,
   telephone: string,
   location: string,
-  gender: string (MALE, FEMALE, OTHER)
+  gender: string \* 'Male', 'Female', 'Other',
 }
 ```
 
@@ -420,7 +417,7 @@ authorization : <token app get when login>
       telephone: string,
       location: string,
       avatar: string | null,
-      gender: string,
+      gender: string \* 'Male', 'Female', 'Other',
       following: Array[id],
       follower: Array[id],
     }
