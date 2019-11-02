@@ -31,18 +31,16 @@ async function signUp(req: Request, res: Response) {
       });
       return;
     }
-
     let userResponse = await userModel.getUserByEmail(email);
-    if (userResponse.data.rows.length !== 0) {
+    if (userResponse.data.length !== 0) {
       res.status(SERVER_OK).json({
         success: false,
         data: [],
         message: 'Email already exist',
       });
     }
-
     userResponse = await userModel.getUserByUsername(username);
-    if (userResponse.data.rows.length !== 0) {
+    if (userResponse.data.length !== 0) {
       res.status(SERVER_OK).json({
         success: false,
         data: [],

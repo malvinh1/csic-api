@@ -103,10 +103,10 @@ async function home(req: Request, res: Response) {
         JSON.parse(user.data.following[i]).id,
       );
       post.data.forEach((element) => {
-        element.username = followingUser.data.username;
-        element.full_name = followingUser.data.full_name;
-        element.location = followingUser.data.location;
-        element.avatar = followingUser.data.avatar;
+        element.username = followingUser.data[0].username;
+        element.full_name = followingUser.data[0].full_name;
+        element.location = followingUser.data[0].location;
+        element.avatar = followingUser.data[0].avatar;
         posts.data.push(element);
       });
     }

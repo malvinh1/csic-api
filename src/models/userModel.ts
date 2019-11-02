@@ -3,12 +3,7 @@ import sjcl from 'sjcl';
 import jwt from 'jsonwebtoken';
 
 import { getDB } from '../db';
-import {
-  UserSignUp,
-  UserSignIn,
-  ResponseObject,
-  ReqEditProfileObject,
-} from '../types';
+import { UserSignUp, UserSignIn, ReqEditProfileObject } from '../types';
 import { API_SECRET } from '../constants';
 
 async function userSignUp(userObject: UserSignUp) {
@@ -54,7 +49,7 @@ async function userSignUp(userObject: UserSignUp) {
     {
       return {
         success: true,
-        data: result.rows[0],
+        data: result.rows,
         message: `User ${full_name} has been added`,
         token: token,
       };
@@ -138,12 +133,11 @@ async function getUserByEmail(email: string) {
       'SELECT * FROM users where email = $1',
       [email],
     );
-    let response: ResponseObject = {
+    return {
       success: true,
-      data: user,
+      data: user.rows,
       message: 'Successfully get user by its email',
     };
-    return response;
   } catch (e) {
     return {
       success: false,
@@ -160,12 +154,11 @@ async function getUserByUsername(username: string) {
       'SELECT * FROM users where username = $1',
       [username],
     );
-    let response: ResponseObject = {
+    return {
       success: true,
-      data: user,
+      data: user.rows,
       message: 'Successfully get user by its email',
     };
-    return response;
   } catch (e) {
     return {
       success: false,
@@ -183,12 +176,11 @@ async function getUserById(id: number) {
       [id],
     );
     delete user.rows[0].password;
-    let response: ResponseObject = {
+    return {
       success: true,
       data: user.rows,
       message: 'Successfully get user by Id',
     };
-    return response;
   } catch (e) {
     return {
       success: false,
