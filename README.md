@@ -4,14 +4,12 @@
 
 ## Comment/Notes
 
-### Comment/Notes
-
 - [x] Finished (fetchable)
 - [ ] Ongoing
 
-# Tables
+## Tables
 
-## Posts
+### posts
 
 | Name        | Type   | Description                             |
 | ----------- | ------ | --------------------------------------- |
@@ -24,8 +22,9 @@
 | category    | string | category which this item belongs to     |
 | description | string | Details about the item                  |
 | tag         | string | 'AVAILABLE', 'UNAVAILABLE', 'EXPIRED'   |
+| timestamp   | bigint | Auto generated timestamp                |
 
-### Table requests
+### requests
 
 | Name         | Type | Description                                          |
 | ------------ | ---- | ---------------------------------------------------- |
@@ -34,27 +33,27 @@
 | requester_id | int4 | Referenced to users(id) whose request the item       |
 | post_id      | int4 | Referenced to posts(id) which item that is requested |
 
-### Table users
+### users
 
-| Name         | Type          | Description                                                                     |
-| ------------ | ------------- | ------------------------------------------------------------------------------- |
-| id           | number        | Auto generated Serial by postgreSQL                                             |
-| email        | string        | For future purpose verification, forgot password, anti-spam                     | -> can change |
-| username     | string        | username of account which has passed frontend verification                      |
-| full_name    | string        | Name for Account identifier                                                     |
-| password     | string        | password of account which has passed frontend verification, Hash(password+salt) |
-| phone_number | string        | Number of phone that can be called                                              |
-| location     | string        | Places the user live in                                                         |
-| avatar       | string        | Cloudinary URL                                                                  |
-| gender       | string        | 'MALE', 'FEMALE', 'OTHER'                                                       |
-| following    | Array<number> | List of userId whoever this user follow                                         |
-| follower     | Array<number> | List of userId whoever follows this user                                        |
+| Name         | Type        | Description                                                                     |
+| ------------ | ----------- | ------------------------------------------------------------------------------- |
+| id           | number      | Auto generated Serial by postgreSQL                                             |
+| email        | string      | For future purpose verification, forgot password, anti-spam                     | -> can change |
+| username     | string      | username of account which has passed frontend verification                      |
+| full_name    | string      | Name for Account identifier                                                     |
+| password     | string      | password of account which has passed frontend verification, Hash(password+salt) |
+| phone_number | string      | Number of phone that can be called                                              |
+| location     | string      | Places the user live in                                                         |
+| avatar       | string      | Cloudinary URL                                                                  |
+| gender       | string      | 'MALE', 'FEMALE', 'OTHER'                                                       |
+| following    | Array[{id}] | List of userId whoever this user follow                                         |
+| follower     | Array[{id}] | List of userId whoever follows this user                                        |
 
-<br/>
+## Authentication
 
-# Authentication
+### Sign Up (SIGNUP SCENE)
 
-- [x] Sign Up (SIGNUP SCENE)
+- [x] Finished (Fetchable)
 
 | A           | B                                 |
 | ----------- | --------------------------------- |
@@ -62,18 +61,16 @@
 | METHOD      | POST                              |
 | Description | Endpoint used for adding new user |
 
-Request Header
+> Request Header
 
-```
-
+```bash
+#!/bin/bash
 Content-Type: multipart/form-data
-
 ```
 
-Request Body
+> Request Body
 
-```
-
+```bash
 {
   email: string,
   username: string,
@@ -83,43 +80,35 @@ Request Body
   location: string,
   image: string, *optional
 }
-
 ```
 
-Response Value
+> Response Value
 
-```
-
+```bash
 {
   success: boolean,
   data: [
     {
-      id : number,
-      email : string,
-      username : string,
-      full_name : string,
+      id: number,
+      email: string,
+      username: string,
+      full_name: string,
       phone_number: string,
       location: string,
       avatar: string | null,
+      gender: string (MALE, FEMALE, OTHER),
+      following: [{id}],
+      follower: [{id}],
     }
   ],
-  message : "full_name has been added.",
-  token : generated with JWT middleware, use this for session and authenticate each time fetching,
+  message: "full_name has been added.",
+  token: generated with JWT middleware, use this for session and authenticate each time fetching,
 }
-
-],
-
-message : "full_name has been added.",
-
-token : generated with JWT middleware, use this for session and authenticate each time fetching,
-
-}
-
 ```
 
-<br/>
+### Sign In (LOGIN SCENE)
 
-- [x] Sign In (LOGIN SCENE)
+- [x] Finished (Fetchable)
 
 | A           | B                                          |
 | ----------- | ------------------------------------------ |
@@ -127,74 +116,215 @@ token : generated with JWT middleware, use this for session and authenticate eac
 | METHOD      | POST                                       |
 | Description | Endpoint used for login from user or admin |
 
-Request Header
+> Request Header
 
-```
-
+```bash
 Content-Type: application/json
-
 ```
 
-Request Body JSON
+> Request Body JSON
 
-```
-
+```bash
 {
-
-credential: string, *can login with email or username
-
+credential: string, \*can login with email or username
 password: string,
-
 }
-
 ```
 
-Response Value
+> Response Value
 
-```
-
-{
-
-success: boolean,
-
-data: [
-
+```bash
 {
   success: boolean,
   data: [
     {
-      id : number,
-      email : string,
-      username : string,
-      full_name : string,
-      phone_number: string,
+      id: number,
+      email: string,
+      username: string,
+      full_name: string,
+      phone_numbe: string,
+      location: string,
+      avatar: string | null,
+      gender: string (MALE, FEMALE, OTHER),
+      following: [{id}],
+      follower: [{id}],
+    }
+  ],
+  message: "full_name has been added.",
+  token: generated with JWT middleware, use this for session and authenticate each time fetching,
+}
+```
+
+---
+
+## Pages
+
+### Home
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                |
+| ----------- | ------------------------------------------------ |
+| FETCH       | /api/page/home                                   |
+| METHOD      | GET                                              |
+| Description | Page's Endpoint used to get data from home scene |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      id: number,
+      user_id: number,
+      item_name: string,
+      image_url: string,
+      buy_date: string,
+      exp_date: string,
+      category: string,
+      description: string,
+      tag: string,
+      timestamp: string,
+      username: string,
+      full_name: string,
       location: string,
       avatar: string | null,
     }
   ],
-  message : "full_name has been added.",
-  token : generated with JWT middleware, use this for session and authenticate each time fetching,
+  message : "Successfully get home data",
 }
-
-],
-
-message : "full_name has been added.",
-
-token : generated with JWT middleware, use this for session and authenticate each time fetching,
-
-}
-
 ```
 
-<br/>
+### My Profile (MY PROFILE SCENE)
 
-# Pages
+- [x] Finished (Fetchable)
 
-<br/>
+| A           | B                                      |
+| ----------- | -------------------------------------- |
+| FETCH       | /api/page/profile                      |
+| METHOD      | GET                                    |
+| Description | Page's Endpoint to get my profile data |
 
-# Features
+> Request Header
 
-- [x] Add Post (ADD POST SCENE)
+```bash
+Content-Type: application/json
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+   {
+     user : [
+      {
+        id: number,
+        email: string,
+        username: string,
+        full_name: string,
+        telephone: string,
+        location: string,
+        avatar: string | null,
+        gender: string (MALE, FEMALE, OTHER),
+        following: Array[{id}],
+        follower: Array[{id}]
+      }
+     ],
+     post : [
+      {
+        id: number,
+        user_id: number,
+        item_name: string,
+        image_url: string,
+        item_name: string,
+        buy_date: string, \*YYYY-MM-DD
+        exp_date: string, \*YYYY-MM-DD
+        category: string,
+        description: string,
+        tag: string, \*'AVAILABLE' OR 'EXPIRED',
+        timestamp: string
+      }
+     ]
+   }
+  ],
+  message: "Successfully retrieve my profile",
+}
+```
+
+### User Profile (USER PROFILE SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                        |
+| ----------- | ---------------------------------------- |
+| FETCH       | /api/page/profile/:id                    |
+| METHOD      | GET                                      |
+| Description | Page's Endpoint to get user profile data |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+   {
+     user : [
+      {
+        id: number,
+        email: string,
+        username: string,
+        full_name: string,
+        telephone: string,
+        location: string,
+        avatar: string | null,
+        gender: string (MALE, FEMALE, OTHER),
+        following: Array[{id}],
+        follower: Array[{id}]
+      }
+     ],
+     post : [
+      {
+        id: number,
+        user_id: number,
+        item_name: string,
+        image_url: string,
+        item_name: string,
+        buy_date: string, \*YYYY-MM-DD
+        exp_date: string, \*YYYY-MM-DD
+        category: string,
+        description: string,
+        tag: string, \*'AVAILABLE' OR 'EXPIRED',
+        timestamp: string
+      }
+     ]
+   }
+  ],
+  message: "Successfully retrieve user profile",
+}
+```
+
+---
+
+## Features
+
+### Add Post (ADD POST SCENE)
+
+- [x] Finished (Fetchable)
 
 | A           | B                                     |
 | ----------- | ------------------------------------- |
@@ -202,189 +332,99 @@ token : generated with JWT middleware, use this for session and authenticate eac
 | METHOD      | POST                                  |
 | Description | Feature's Endpoint used to add a post |
 
-Request Header
+> Request Header
 
-```
-
-
-
+```bash
 Content-Type: multipart/form-data
-
 authorization : <token app get when login>
-
-
-
 ```
 
-Request Body JSON
+> Request Body JSON
 
-```
-
-
-
+```bash
 {
-
-image: string,
-
-item_name: string,
-
-buy_date: string, *YYYY-MM-DD
-
-exp_date: string, *YYYY-MM-DD
-
-category: string,
-
-description: string,
-
-tag: string, \*'AVAILABLE' OR 'EXPIRED'
-
+  image: string,
+  item_name: string,
+  buy_date: string, \*YYYY-MM-DD
+  exp_date: string, \*YYYY-MM-DD
+  category: string,
+  description: string,
+  tag: string, \*'AVAILABLE' OR 'EXPIRED'
 }
-
-
-
 ```
 
-Response Value
+> Response Value
 
-```
-
-
-
+```bash
 {
-
-success : boolean,
-
-data : [
-
-{
-
-id: number,
-
-user_id: number,
-
-item_name: string,
-
-image_url: string,
-
-item_name: string,
-
-buy_date: string, *YYYY-MM-DD
-
-exp_date: string, *YYYY-MM-DD
-
-category: string,
-
-description: string,
-
-tag: string, *'AVAILABLE' OR 'EXPIRED'
-
+  success : boolean,
+  data : [
+    {
+      id: number,
+      user_id: number,
+      item_name: string,
+      image_url: string,
+      item_name: string,
+      buy_date: string, \*YYYY-MM-DD
+      exp_date: string, \*YYYY-MM-DD
+      category: string,
+      description: string,
+      tag: string, \*'AVAILABLE' OR 'EXPIRED',
+      timestamp: string,
+    }
+  ],
+  message : "Successfully insert a Post!"
 }
-
-],
-
-message : "Successfully insert a Post!"
-
-}
-
-
-
 ```
 
-<br/>
+### Edit Profile (EDIT PROFILE SCENE)
 
-```
-
-
-
-- [x] Edit Profile (EDIT PROFILE SCENE)
-
+- [x] Finished (Fetchable)
 
 | A           | B                                       |
-| ----------- | ----------------------------------------|
+| ----------- | --------------------------------------- |
 | FETCH       | /api/feature/edit-profile               |
 | METHOD      | POST                                    |
 | Description | Feature's Endpoint used to edit profile |
 
+> Request Header
 
-Request Header
-
-
-```
-
+```bash
 Content-Type: multipart/form-data
-
 authorization : <token app get when login>
-
 ```
 
+> Request Body JSON
 
-
-Request Body JSON
-
-
-
-```
-
+```bash
 {
-
-image: string,
-
-full_name: string,
-
-telephone: string,
-
-location: string,
-
-gender: string (MALE, FEMALE, OTHER)
-
+  image: string,
+  full_name: string,
+  telephone: string,
+  location: string,
+  gender: string (MALE, FEMALE, OTHER)
 }
-
 ```
 
+> Response Value
 
-
-Response Value
-
-
-
-```
-
+```bash
 {
-
-success : boolean,
-
-data : [
-
-{
-
-id: number,
-
-email: string,
-
-username: string,
-
-full_name: string,
-
-telephone: string,
-
-location: string,
-
-avatar: string | null,
-
-gender: string,
-
-following: Array[id],
-
-follower: Array[id],
-
+  success : boolean,
+  data : [
+    {
+      id: number,
+      email: string,
+      username: string,
+      full_name: string,
+      telephone: string,
+      location: string,
+      avatar: string | null,
+      gender: string,
+      following: Array[id],
+      follower: Array[id],
+    }
+  ],
+  message : "User profile has been changed"
 }
-
-],
-
-message : "User profile has been changed"
-
-}
-
-```
-
 ```
