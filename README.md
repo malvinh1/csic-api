@@ -1,15 +1,17 @@
 # csic-api
 
-This is CSIC API made for Cibo APP!
+> This is CSIC API for Cibo App! Nothing goes to waste
+
+## Comment/Notes
 
 ### Comment/Notes
 
 - [x] Finished (fetchable)
 - [ ] Ongoing
 
-# Table
+# Tables
 
-### Table posts
+## Posts
 
 | Name        | Type   | Description                             |
 | ----------- | ------ | --------------------------------------- |
@@ -63,12 +65,15 @@ This is CSIC API made for Cibo APP!
 Request Header
 
 ```
+
 Content-Type: multipart/form-data
+
 ```
 
 Request Body
 
 ```
+
 {
   email: string,
   username: string,
@@ -78,11 +83,13 @@ Request Body
   location: string,
   image: string, *optional
 }
+
 ```
 
 Response Value
 
 ```
+
 {
   success: boolean,
   data: [
@@ -99,6 +106,15 @@ Response Value
   message : "full_name has been added.",
   token : generated with JWT middleware, use this for session and authenticate each time fetching,
 }
+
+],
+
+message : "full_name has been added.",
+
+token : generated with JWT middleware, use this for session and authenticate each time fetching,
+
+}
+
 ```
 
 <br/>
@@ -114,21 +130,35 @@ Response Value
 Request Header
 
 ```
+
 Content-Type: application/json
+
 ```
 
 Request Body JSON
 
 ```
+
 {
-  credential: string, *can login with email or username
-  password: string,
+
+credential: string, *can login with email or username
+
+password: string,
+
 }
+
 ```
 
 Response Value
 
 ```
+
+{
+
+success: boolean,
+
+data: [
+
 {
   success: boolean,
   data: [
@@ -145,6 +175,15 @@ Response Value
   message : "full_name has been added.",
   token : generated with JWT middleware, use this for session and authenticate each time fetching,
 }
+
+],
+
+message : "full_name has been added.",
+
+token : generated with JWT middleware, use this for session and authenticate each time fetching,
+
+}
+
 ```
 
 <br/>
@@ -166,45 +205,193 @@ Response Value
 Request Header
 
 ```
+
+
+
 Content-Type: multipart/form-data
+
 authorization : <token app get when login>
+
+
+
 ```
 
 Request Body JSON
 
 ```
+
+
+
 {
-  image: string,
-  item_name: string,
-  buy_date: string, *YYYY-MM-DD
-  exp_date: string, *YYYY-MM-DD
-  category: string,
-  description: string,
-  tag: string, *'AVAILABLE' OR 'EXPIRED'
+
+image: string,
+
+item_name: string,
+
+buy_date: string, *YYYY-MM-DD
+
+exp_date: string, *YYYY-MM-DD
+
+category: string,
+
+description: string,
+
+tag: string, \*'AVAILABLE' OR 'EXPIRED'
+
 }
+
+
+
 ```
 
 Response Value
 
 ```
+
+
+
 {
-  success : boolean,
-  data : [
-    {
-      id: number,
-      user_id: number,
-      item_name: string,
-      image_url: string,
-      item_name: string,
-      buy_date: string, *YYYY-MM-DD
-      exp_date: string, *YYYY-MM-DD
-      category: string,
-      description: string,
-      tag: string, *'AVAILABLE' OR 'EXPIRED'
-    }
-  ],
-  message : "Successfully insert a Post!"
+
+success : boolean,
+
+data : [
+
+{
+
+id: number,
+
+user_id: number,
+
+item_name: string,
+
+image_url: string,
+
+item_name: string,
+
+buy_date: string, *YYYY-MM-DD
+
+exp_date: string, *YYYY-MM-DD
+
+category: string,
+
+description: string,
+
+tag: string, *'AVAILABLE' OR 'EXPIRED'
+
 }
+
+],
+
+message : "Successfully insert a Post!"
+
+}
+
+
+
 ```
 
 <br/>
+
+```
+
+
+
+- [x] Edit Profile (EDIT PROFILE SCENE)
+
+
+
+| A | B |
+
+| ----------- | ------------------------------------- |
+
+| FETCH | /api/feature/edit-profile |
+
+| METHOD | POST |
+
+| Description | Feature's Endpoint used to add a post |
+
+
+
+Request Header
+
+
+
+```
+
+Content-Type: multipart/form-data
+
+authorization : <token app get when login>
+
+```
+
+
+
+Request Body JSON
+
+
+
+```
+
+{
+
+image: string,
+
+full_name: string,
+
+telephone: string,
+
+location: string,
+
+gender: string (MALE, FEMALE, OTHER)
+
+}
+
+```
+
+
+
+Response Value
+
+
+
+```
+
+{
+
+success : boolean,
+
+data : [
+
+{
+
+id: number,
+
+email: string,
+
+username: string,
+
+full_name: string,
+
+telephone: string,
+
+location: string,
+
+avatar: string | null,
+
+gender: string,
+
+following: Array[id],
+
+follower: Array[id],
+
+}
+
+],
+
+message : "User profile has been changed"
+
+}
+
+```
+
+```

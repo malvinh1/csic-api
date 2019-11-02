@@ -185,7 +185,7 @@ async function getUserById(id: number) {
     delete user.rows[0].password;
     let response: ResponseObject = {
       success: true,
-      data: user.rows[0],
+      data: user.rows,
       message: 'Successfully get user by Id',
     };
     return response;
