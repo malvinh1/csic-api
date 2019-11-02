@@ -79,7 +79,7 @@ async function home(req: Request, res: Response) {
     let decoded = (<any>req).decoded;
     let { id } = decoded;
     let user: ResponseObject = await userModel.getUserById(Number(id));
-    if (user.data.following.length === 0) {
+    if (user.data[0].following.length === 0) {
       res.status(SERVER_OK).json(
         generateResponse({
           success: true,
@@ -95,12 +95,12 @@ async function home(req: Request, res: Response) {
       data: [],
       message: 'Successfully get home data',
     };
-    for (i = 0; i < user.data.following.length; i += 1) {
+    for (i = 0; i < user.data[0].following.length; i += 1) {
       let followingUser = await userModel.getUserById(
-        JSON.parse(user.data.following[i]).id,
+        JSON.parse(user.data[0].following[i]).id,
       );
       let post = await postModel.getPostByUserId(
-        JSON.parse(user.data.following[i]).id,
+        JSON.parse(user.data[0].following[i]).id,
       );
       post.data.forEach((element) => {
         element.username = followingUser.data[0].username;

@@ -90,7 +90,7 @@ async function userSignIn(userObject: UserSignIn) {
         {
           return {
             success: true,
-            data: userResultEmail.rows[0],
+            data: userResultEmail.rows,
             message: 'Login Success',
             token: token,
           };
@@ -105,7 +105,7 @@ async function userSignIn(userObject: UserSignIn) {
         let token = jwt.sign({ id }, API_SECRET);
         return {
           success: true,
-          data: userResultUsername.rows[0],
+          data: userResultUsername.rows,
           message: 'Login Success',
           token: token,
         };
