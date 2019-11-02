@@ -64,7 +64,6 @@
 > Request Header
 
 ```bash
-#!/bin/bash
 Content-Type: multipart/form-data
 ```
 
