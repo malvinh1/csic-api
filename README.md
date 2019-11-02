@@ -299,21 +299,14 @@ message : "Successfully insert a Post!"
 - [x] Edit Profile (EDIT PROFILE SCENE)
 
 
-
-| A | B |
-
-| ----------- | ------------------------------------- |
-
-| FETCH | /api/feature/edit-profile |
-
-| METHOD | POST |
-
-| Description | Feature's Endpoint used to add a post |
-
+| A           | B                                       |
+| ----------- | ----------------------------------------|
+| FETCH       | /api/feature/edit-profile               |
+| METHOD      | POST                                    |
+| Description | Feature's Endpoint used to edit profile |
 
 
 Request Header
-
 
 
 ```
