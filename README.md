@@ -67,7 +67,7 @@
 Content-Type: multipart/form-data
 ```
 
-> Request Body
+> Request Body Multipart
 
 ```bash
 {
@@ -77,7 +77,7 @@ Content-Type: multipart/form-data
   full_name: string,
   phone_number: string,
   location: string,
-  image: string, *optional
+  image: file, *optional
 }
 ```
 
@@ -340,13 +340,13 @@ authorization : <token app get when login>
 
 ```bash
 {
-  image: string,
+  image: file,
   item_name: string,
   buy_date: string, \*YYYY-MM-DD
   exp_date: string, \*YYYY-MM-DD
   category: string,
   description: string,
-  tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
+  tag: string, \*'AVAILABLE', 'EXPIRED',
 }
 ```
 
@@ -370,6 +370,86 @@ authorization : <token app get when login>
     }
   ],
   message : "Successfully insert a Post!"
+}
+```
+
+### Edit Post (EDIT POST SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                     |
+| ----------- | ------------------------------------- |
+| FETCH       | /api/feature/edit-post/:post_id       |
+| METHOD      | POST                                  |
+| Description | Feature's Endpoint used to edit a post that user has, handled so another user can't edit other people posts |
+
+> Request Header
+
+```bash
+Content-Type: multipart/form-data
+authorization : <token app get when login>
+```
+
+> Request Body Multipart
+
+```bash
+{
+  image: file, *optional, don't send same image if user doesn't change the post image
+  item_name: string,
+  buy_date: string, \*YYYY-MM-DD
+  exp_date: string, \*YYYY-MM-DD
+  category: string,
+  description: string,
+  tag: string, \*'AVAILABLE', 'EXPIRED',
+}
+```
+
+> Response Value
+
+```bash
+{
+  success : boolean,
+  data : [
+    {
+      id: number,
+      user_id: number,
+      item_name: string,
+      image_url: string,
+      buy_date: string, \*YYYY-MM-DD
+      exp_date: string, \*YYYY-MM-DD
+      category: string,
+      description: string,
+      tag: string, \*'AVAILABLE', 'UNAVAILABLE', 'EXPIRED',
+      timestamp: string,
+    }
+  ],
+  message : "Successfully insert a Post!"
+}
+```
+
+### Delete Post (DELETE POST SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                     |
+| ----------- | ------------------------------------- |
+| FETCH       | /api/feature/delete-post/:post_id     |
+| METHOD      | GET                                   |
+| Description | Feature's Endpoint used to edit a post that user has, handled so another user can't edit other people posts |
+
+> Request Header
+
+```bash
+authorization : <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success : boolean,
+  data : [],
+  message : "Successfully Getting Rid A Post!"
 }
 ```
 
