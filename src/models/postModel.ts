@@ -133,7 +133,7 @@ async function updatePost(
     }
     return {
       success: true,
-      data: postData.rows[0],
+      data: postData.rows,
       message: 'User post has been changed',
     };
   } catch (e) {
