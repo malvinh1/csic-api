@@ -65,17 +65,6 @@ async function addPost(req: Request, res: Response) {
         }),
       );
     }
-
-    let result: ResponseObject = {
-      success: true,
-      data: [],
-      message: '',
-    };
-    if (result.success) {
-      res.status(SERVER_OK).json(generateResponse(result));
-    } else {
-      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
-    }
   } catch (e) {
     res.status(SERVER_BAD_REQUEST).json(String(e));
     return;
@@ -248,4 +237,39 @@ async function editPost(req: Request, res: Response) {
   }
 }
 
-export default { editPost, addPost, editProfile };
+async function deletePost(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let { post_id } = req.params;
+
+    let postResponse = await postModel.getPostById(Number(post_id));
+    if (!postResponse.data) {
+      res.status(SERVER_BAD_REQUEST).json({
+        success: false,
+        data: [],
+        message: 'There is no post with that ID',
+      });
+      return;
+    } else if (postResponse.data.user_id !== id) {
+      res.status(SERVER_BAD_REQUEST).json({
+        success: false,
+        data: [],
+        message: 'This user has no privilege to delete this post.',
+      });
+      return;
+    }
+
+    postResponse = await postModel.deletePostById(Number(post_id));
+    if (postResponse.success) {
+      res.status(SERVER_OK).json(generateResponse(postResponse));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(postResponse));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
+export default { editPost, addPost, editProfile, deletePost };

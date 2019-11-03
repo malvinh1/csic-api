@@ -141,4 +141,30 @@ async function updatePost(
   }
 }
 
-export default { insertPost, getPostByUserId, getPostById, updatePost };
+async function deletePostById(post_id: number) {
+  try {
+    let db = await getDB();
+    let post: QueryResult = await db.query('DELETE FROM posts where id = $1', [
+      post_id,
+    ]);
+    return {
+      success: true,
+      data: post.rows[0],
+      message: 'Successfully getting rid of a post',
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+export default {
+  insertPost,
+  getPostByUserId,
+  getPostById,
+  updatePost,
+  deletePostById,
+};
