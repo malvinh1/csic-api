@@ -15,5 +15,10 @@ featureRouter.post(
   middleware.multerUploads,
   featureController.editProfile,
 );
+featureRouter.post(
+  '/edit-post/:post_id',
+  middleware.multerUploads,
+  featureController.editPost,
+);
 
 export default featureRouter;
