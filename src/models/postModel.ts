@@ -133,7 +133,7 @@ async function updatePost(
     }
     return {
       success: true,
-      data: postData.rows[0],
+      data: postData.rows,
       message: 'User post has been changed',
     };
   } catch (e) {
@@ -150,7 +150,7 @@ async function deletePostById(post_id: number) {
     return {
       success: true,
       data: post.rows[0],
-      message: 'Successfully getting rid of a post',
+      message: 'Successfully Getting Rid A Post!',
     };
   } catch (e) {
     return {
