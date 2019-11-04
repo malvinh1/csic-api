@@ -5,6 +5,7 @@ import postModel from '../models/postModel';
 import { generateResponse } from '../helpers';
 import { ResponseObject } from '../types';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
+import requestModel from '../models/requestModel';
 
 async function myProfile(req: Request, res: Response) {
   try {
@@ -121,4 +122,36 @@ async function home(req: Request, res: Response) {
   }
 }
 
-export default { myProfile, userProfile, home };
+async function myRequest(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let result: ResponseObject = await requestModel.getRequestByRequester_Id(
+      id,
+    );
+    if (result.success) {
+      res.status(SERVER_OK).json(generateResponse(result));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+async function userRequest(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let result: ResponseObject = await requestModel.getRequestByUser_id(id);
+    if (result.success) {
+      res.status(SERVER_OK).json(generateResponse(result));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+export default { myProfile, userProfile, home, myRequest, userRequest };

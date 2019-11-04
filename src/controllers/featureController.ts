@@ -5,6 +5,7 @@ import postModel from '../models/postModel';
 import { ResponseObject, PostRequestObject } from '../types';
 import { generateResponse, dataUri } from '../helpers';
 import { uploader } from '../cloudinarySetup';
+import requestModel from '../models/requestModel';
 
 async function addPost(req: Request, res: Response) {
   try {
@@ -272,4 +273,24 @@ async function deletePost(req: Request, res: Response) {
   }
 }
 
-export default { editPost, addPost, editProfile, deletePost };
+async function addRequest(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id: user_id } = decoded;
+    let { post_id } = req.body;
+
+    let result: ResponseObject = await requestModel.insertRequest(
+      user_id,
+      Number(post_id),
+    );
+    if (result.success) {
+      res.status(SERVER_OK).json(generateResponse(result));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+export default { addPost, editProfile, editPost, deletePost, addRequest };
