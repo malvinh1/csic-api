@@ -104,10 +104,10 @@ async function editProfile(req: Request, res: Response) {
       });
       return;
     }
-    full_name = full_name ? full_name : user.data.full_name;
-    phone_number = phone_number ? phone_number : user.data.phone_number;
-    location = location ? location : user.data.location;
-    gender = gender ? gender : user.data.gender;
+    full_name = full_name ? full_name : user.data[0].full_name;
+    phone_number = phone_number ? phone_number : user.data[0].phone_number;
+    location = location ? location : user.data[0].location;
+    gender = gender ? gender : user.data[0].gender;
 
     if (req.file) {
       const file = dataUri(req).content;
@@ -133,7 +133,7 @@ async function editProfile(req: Request, res: Response) {
           }),
         );
     } else {
-      let avatar = user.data.avatar;
+      let avatar = user.data[0].avatar;
       let result: ResponseObject = await userModel.updateUser(
         { full_name, phone_number, location, avatar, gender },
         id,
