@@ -323,4 +323,4 @@ async function addRequest(req: Request, res: Response) {
   }
 }
 
-export default { addPost, editProfile, editPost, deletePost, addRequest };
+export default { addPost, editPost, deletePost, editProfile, addRequest };
