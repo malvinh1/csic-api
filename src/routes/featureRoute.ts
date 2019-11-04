@@ -15,5 +15,15 @@ featureRouter.post(
   middleware.multerUploads,
   featureController.editProfile,
 );
+featureRouter.post(
+  '/edit-post/:post_id',
+  middleware.multerUploads,
+  featureController.editPost,
+);
+featureRouter.get(
+  '/delete-post/:post_id',
+  middleware.multerUploads,
+  featureController.deletePost,
+);
 
 export default featureRouter;
