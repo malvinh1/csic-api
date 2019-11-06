@@ -14,6 +14,7 @@ async function signUp(req: Request, res: Response) {
       full_name,
       phone_number,
       location,
+      image,
     } = req.body;
     if (!email || !username || !password) {
       res.status(SERVER_OK).json({
@@ -79,6 +80,21 @@ async function signUp(req: Request, res: Response) {
             message: 'someting went wrong while processing your request',
           }),
         );
+    } else if (image) {
+      let userResponse = await userModel.userSignUp({
+        email,
+        username,
+        password,
+        full_name,
+        phone_number,
+        location,
+        avatar: image,
+      });
+      if (userResponse.success) {
+        res.status(SERVER_OK).json(generateResponse(userResponse));
+      } else {
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+      }
     } else {
       let userResponse = await userModel.userSignUp({
         email,

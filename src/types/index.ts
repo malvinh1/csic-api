@@ -39,5 +39,6 @@ export type PostRequestObject = {
   exp_date: string;
   category: string;
   description: string;
-  tag: 'AVAILABLE' | 'EXPIRED' | 'UNAVAILABLE';
+  tag: 'Available' | 'Expired' | 'Unavailable';
+  image?: string;
 };
