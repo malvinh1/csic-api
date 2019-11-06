@@ -16,7 +16,7 @@
 | id          | int4   | Auto generated Serial by postgreSQL     |
 | user_id     | int4   | Reference to users(id)                  |
 | item_name   | string | Name or brand of the item               |
-| image_url   | string | Cloudinary URL for storing item's image |
+| image   | string | Cloudinary URL for storing item's image |
 | buy_date    | Date   | Date at time                            |
 | exp_date    | Date   | Auto generated Serial by postgreSQL     |
 | category    | string | Category which this item belongs to     |
@@ -184,7 +184,7 @@ Content-Type: application/json
       id: number,
       user_id: number,
       item_name: string,
-      image_url: string,
+      image: string,
       buy_date: string,
       exp_date: string,
       category: string,
@@ -243,7 +243,7 @@ Content-Type: application/json
         id: number,
         user_id: number,
         item_name: string,
-        image_url: string,
+        image: string,
         buy_date: string, \*YYYY-MM-DD
         exp_date: string, \*YYYY-MM-DD
         category: string,
@@ -300,7 +300,7 @@ Content-Type: application/json
         id: number,
         user_id: number,
         item_name: string,
-        image_url: string,
+        image: string,
         buy_date: string, \*YYYY-MM-DD
         exp_date: string, \*YYYY-MM-DD
         category: string,
@@ -360,7 +360,7 @@ authorization : <token app get when login>
       id: number,
       user_id: number,
       item_name: string,
-      image_url: string,
+      image: string,
       buy_date: string, \*YYYY-MM-DD
       exp_date: string, \*YYYY-MM-DD
       category: string,
@@ -414,7 +414,7 @@ authorization : <token app get when login>
       id: number,
       user_id: number,
       item_name: string,
-      image_url: string,
+      image: string,
       buy_date: string, \*YYYY-MM-DD
       exp_date: string, \*YYYY-MM-DD
       category: string,

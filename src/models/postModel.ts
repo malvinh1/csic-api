@@ -5,7 +5,7 @@ import { ResponseObject, PostRequestObject } from '../types';
 async function insertPost(
   postObject: {
     id: string;
-    image_url: string;
+    image: string;
     timestamp: number;
   } & PostRequestObject,
 ) {
@@ -13,7 +13,7 @@ async function insertPost(
     let {
       id,
       item_name,
-      image_url,
+      image,
       buy_date,
       exp_date,
       category,
@@ -25,7 +25,7 @@ async function insertPost(
     let valueQuery = [
       id,
       item_name,
-      image_url,
+      image,
       buy_date,
       exp_date,
       category,
@@ -35,7 +35,7 @@ async function insertPost(
     ];
 
     let insertResult: QueryResult = await db.query(
-      'INSERT INTO posts (user_id, item_name, image_url, buy_date, exp_date, category, description, tag, timestamp) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      'INSERT INTO posts (user_id, item_name, image, buy_date, exp_date, category, description, tag, timestamp) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
       valueQuery,
     );
 
@@ -96,7 +96,7 @@ async function getPostById(post_id: number) {
 }
 
 async function updatePost(
-  editReq: { image_url?: string } & PostRequestObject,
+  editReq: { image?: string } & PostRequestObject,
   postId: number,
 ) {
   try {
@@ -107,13 +107,13 @@ async function updatePost(
       exp_date,
       category,
       description,
-      image_url,
+      image,
       tag,
     } = editReq;
     let postData: QueryResult;
-    if (image_url) {
+    if (image) {
       postData = await db.query(
-        'UPDATE posts SET item_name=$1, buy_date=$2, exp_date=$3, category=$4, description=$5, tag=$6, image_url=$7 WHERE id=$8 RETURNING *',
+        'UPDATE posts SET item_name=$1, buy_date=$2, exp_date=$3, category=$4, description=$5, tag=$6, image=$7 WHERE id=$8 RETURNING *',
         [
           item_name,
           buy_date,
@@ -121,7 +121,7 @@ async function updatePost(
           category,
           description,
           tag,
-          image_url,
+          image,
           postId,
         ],
       );
