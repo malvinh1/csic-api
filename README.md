@@ -125,8 +125,8 @@ Content-Type: application/json
 
 ```bash
 {
-credential: string, \*can login with email or username
-password: string,
+  credential: string, \*can login with email or username
+  password: string,
 }
 ```
 
