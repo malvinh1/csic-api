@@ -1,6 +1,6 @@
 import { getDB } from '../db';
 import { QueryResult } from 'pg';
-import { ResponseObject, PostRequestObject } from '../types';
+import { PostRequestObject } from '../types';
 
 async function insertPost(
   postObject: {

@@ -25,5 +25,6 @@ featureRouter.get(
   middleware.multerUploads,
   featureController.deletePost,
 );
+featureRouter.post('/add-request', featureController.addRequest);
 
 export default featureRouter;
