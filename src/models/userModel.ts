@@ -258,6 +258,34 @@ async function updateFollowerUser(
   }
 }
 
+async function getUserByQuery(query: string) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      `SELECT id, username, full_name, avatar FROM users where username LIKE '%' || $1 || '%'`,
+      [query],
+    );
+    if (user.rows.length === 0) {
+      return {
+        success: true,
+        data: [],
+        message: 'There are no user which username contains ' + query,
+      };
+    }
+    return {
+      success: true,
+      data: user.rows,
+      message: 'Successfully get username which username contains ' + query,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
@@ -267,4 +295,5 @@ export default {
   updateUser,
   updateFollowingUser,
   updateFollowerUser,
+  getUserByQuery,
 };
