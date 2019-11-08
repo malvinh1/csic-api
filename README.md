@@ -16,7 +16,7 @@
 | id          | int4   | Auto generated Serial by postgreSQL     |
 | user_id     | int4   | Reference to users(id)                  |
 | item_name   | string | Name or brand of the item               |
-| image   | string | Cloudinary URL for storing item's image |
+| image       | string | Cloudinary URL for storing item's image |
 | buy_date    | Date   | Date at time                            |
 | exp_date    | Date   | Auto generated Serial by postgreSQL     |
 | category    | string | Category which this item belongs to     |
@@ -172,6 +172,7 @@ Content-Type: application/json
 
 ```bash
 Content-Type: application/json
+Authorization: <token app get when login>
 ```
 
 > Response Value
@@ -215,6 +216,7 @@ Content-Type: application/json
 
 ```bash
 Content-Type: application/json
+Authorization: <token app get when login>
 ```
 
 > Response Value
@@ -236,6 +238,7 @@ Content-Type: application/json
         gender: string \* 'Male', 'Female', 'Other',
         following: Array[{id}],
         follower: Array[{id}]
+        is_followed_by_you: boolean
       }
      ],
      post : [
@@ -272,6 +275,7 @@ Content-Type: application/json
 
 ```bash
 Content-Type: application/json
+Authorization: <token app get when login>
 ```
 
 > Response Value
@@ -333,7 +337,7 @@ Content-Type: application/json
 
 ```bash
 Content-Type: multipart/form-data
-authorization : <token app get when login>
+Authorization: <token app get when login>
 ```
 
 > Request Body JSON
@@ -354,8 +358,8 @@ authorization : <token app get when login>
 
 ```bash
 {
-  success : boolean,
-  data : [
+  success: boolean,
+  data: [
     {
       id: number,
       user_id: number,
@@ -369,7 +373,7 @@ authorization : <token app get when login>
       timestamp: string,
     }
   ],
-  message : "Successfully insert a Post!"
+  message: "Successfully insert a Post!"
 }
 ```
 
@@ -377,17 +381,17 @@ authorization : <token app get when login>
 
 - [x] Finished (Fetchable)
 
-| A           | B                                     |
-| ----------- | ------------------------------------- |
-| FETCH       | /api/feature/edit-post/:post_id       |
-| METHOD      | POST                                  |
+| A           | B                                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------------- |
+| FETCH       | /api/feature/edit-post/:post_id                                                                             |
+| METHOD      | POST                                                                                                        |
 | Description | Feature's Endpoint used to edit a post that user has, handled so another user can't edit other people posts |
 
 > Request Header
 
 ```bash
 Content-Type: multipart/form-data
-authorization : <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Request Body Multipart
@@ -408,8 +412,8 @@ authorization : <token app get when login>
 
 ```bash
 {
-  success : boolean,
-  data : [
+  success: boolean,
+  data: [
     {
       id: number,
       user_id: number,
@@ -423,7 +427,7 @@ authorization : <token app get when login>
       timestamp: string,
     }
   ],
-  message : "Successfully insert a Post!"
+  message: "Successfully insert a Post!"
 }
 ```
 
@@ -431,16 +435,17 @@ authorization : <token app get when login>
 
 - [x] Finished (Fetchable)
 
-| A           | B                                     |
-| ----------- | ------------------------------------- |
-| FETCH       | /api/feature/delete-post/:post_id     |
-| METHOD      | GET                                   |
+| A           | B                                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------------- |
+| FETCH       | /api/feature/delete-post/:post_id                                                                           |
+| METHOD      | GET                                                                                                         |
 | Description | Feature's Endpoint used to edit a post that user has, handled so another user can't edit other people posts |
 
 > Request Header
 
 ```bash
-authorization : <token app get when login>
+Content-Type: application/json
+Authorization : <token app get when login>
 ```
 
 > Response Value
@@ -467,7 +472,7 @@ authorization : <token app get when login>
 
 ```bash
 Content-Type: multipart/form-data
-authorization : <token app get when login>
+Authorization : <token app get when login>
 ```
 
 > Request Body JSON
@@ -502,5 +507,32 @@ authorization : <token app get when login>
     }
   ],
   message : "User profile has been changed"
+}
+```
+
+### Follow (TOGGLE FOLLOW & UNFOLLOW)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                          |
+| ----------- | ------------------------------------------ |
+| FETCH       | /api/feature/follow/:user_id               |
+| METHOD      | GET                                        |
+| Description | Feature's Endpoint used to follow/unfollow |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+Authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success : boolean,
+  data : [],
+  message : "User has been followed" / "User has been unfollowed",
 }
 ```
