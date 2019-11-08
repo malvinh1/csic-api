@@ -57,7 +57,6 @@ async function userProfile(req: Request, res: Response) {
     }
     if (userResult.success && postResult.success) {
       let i: number;
-      console.log(userResult);
       for (i = 0; i < myUserResult.data[0].following.length; i += 1) {
         myUserResult.data[0].following[i] = JSON.parse(
           myUserResult.data[0].following[i],
