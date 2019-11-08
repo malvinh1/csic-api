@@ -3,7 +3,12 @@ import sjcl from 'sjcl';
 import jwt from 'jsonwebtoken';
 
 import { getDB } from '../db';
-import { UserSignUp, UserSignIn, ReqEditProfileObject } from '../types';
+import {
+  UserSignUp,
+  UserSignIn,
+  ReqEditProfileObject,
+  Following,
+} from '../types';
 import { API_SECRET } from '../constants';
 
 async function userSignUp(userObject: UserSignUp) {
@@ -209,6 +214,28 @@ async function updateUser(editReq: ReqEditProfileObject, id: number) {
   }
 }
 
+async function updateFollowingUser(
+  followingData: Array<Following>,
+  id: number,
+  follow: boolean,
+) {
+  try {
+    let db = await getDB();
+
+    await db.query('UPDATE users SET following = $1 WHERE id=$2', [
+      followingData,
+      id,
+    ]);
+    return {
+      success: true,
+      data: [],
+      message: follow ? 'User has been followed' : 'User has been unfollowed',
+    };
+  } catch (e) {
+    return { success: false, data: [], message: String(e) };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
@@ -216,4 +243,5 @@ export default {
   getUserByUsername,
   getUserById,
   updateUser,
+  updateFollowingUser,
 };
