@@ -9,6 +9,16 @@
 
 ## Tables
 
+### chats
+
+| Name        | Type   | Description                          |
+| ----------- | ------ | ------------------------------------ |
+| id          | int4   | Auto generated Serial by postgreSQL  |
+| user_id     | int4   | Reference to users(id)               |
+| receiver_id | int4   | Reference to users(id)               |
+| timestamp   | bigint | Auto generated timestamp             |
+| message     | text   | The Message that user sent to others |
+
 ### posts
 
 | Name        | Type   | Description                             |
