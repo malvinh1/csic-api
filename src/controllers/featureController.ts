@@ -18,17 +18,18 @@ async function addPost(req: Request, res: Response) {
       category,
       description,
       tag,
+      image,
     }: PostRequestObject = req.body;
+    let timestamp = Date.now();
     if (req.file) {
       const file = dataUri(req).content;
       return uploader
         .upload(file)
         .then(async (result: any) => {
-          let image_url = result.url;
-          let timestamp = Date.now();
+          let image = result.url;
           let insertResponse: ResponseObject = await postModel.insertPost({
             id: userID,
-            image_url,
+            image,
             item_name,
             buy_date:
               buy_date && buy_date != '' && buy_date != null ? buy_date : null,
@@ -57,6 +58,25 @@ async function addPost(req: Request, res: Response) {
             message: 'Something Went Wrong While Processing Your Request',
           }),
         );
+    } else if (image) {
+      let insertResponse: ResponseObject = await postModel.insertPost({
+        id: userID,
+        image: image,
+        item_name,
+        buy_date:
+          buy_date && buy_date != '' && buy_date != null ? buy_date : null,
+        exp_date:
+          exp_date && buy_date != '' && exp_date != null ? exp_date : null,
+        category,
+        description,
+        tag,
+        timestamp,
+      });
+      if (insertResponse.success) {
+        res.status(SERVER_OK).json(generateResponse(insertResponse));
+      } else {
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(insertResponse));
+      }
     } else {
       res.status(SERVER_BAD_REQUEST).json(
         generateResponse({
@@ -75,7 +95,7 @@ async function addPost(req: Request, res: Response) {
 async function editProfile(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
-    let { full_name, phone_number, location, gender } = req.body;
+    let { full_name, phone_number, location, gender, image } = req.body;
     if (!full_name && !phone_number && !location && !gender && !req.file) {
       res.status(SERVER_OK).json({
         success: false,
@@ -122,6 +142,16 @@ async function editProfile(req: Request, res: Response) {
             message: 'Something went wrong while processing your request',
           }),
         );
+    } else if (image) {
+      let userResponse: ResponseObject = await userModel.updateUser(
+        { full_name, phone_number, location, avatar: image, gender },
+        id,
+      );
+      if (userResponse.success) {
+        res.status(SERVER_OK).json(generateResponse(userResponse));
+      } else {
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+      }
     } else {
       let avatar = user.data[0].avatar;
       let result: ResponseObject = await userModel.updateUser(
@@ -189,7 +219,7 @@ async function editPost(req: Request, res: Response) {
       return uploader
         .upload(file)
         .then(async (db_result: any) => {
-          let image_url = db_result.url;
+          let image = db_result.url;
           let result: ResponseObject = await postModel.updatePost(
             {
               item_name,
@@ -197,7 +227,7 @@ async function editPost(req: Request, res: Response) {
               exp_date,
               category,
               description,
-              image_url,
+              image,
               tag,
             },
             Number(post_id),

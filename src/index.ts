@@ -12,8 +12,14 @@ const app: express.Application = express();
 
 async function serverSetup() {
   app.use(cors());
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json({ limit: '80mb' }));
+  app.use(
+    bodyParser.urlencoded({
+      limit: '80mb',
+      extended: true,
+      parameterLimit: 80000,
+    }),
+  );
   app.locals.db = await getDB();
   await seeder(app.locals.db);
   app.use('*', cloudinaryConfig);
