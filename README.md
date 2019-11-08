@@ -557,7 +557,7 @@ Authorization: <token app get when login>
 
 ```bash
 {
-  image: string,
+  image: file | string, *optional
   full_name: string,
   phone_number: string,
   location: string,
@@ -647,5 +647,39 @@ Authorization: <token app get when login>
   success: boolean,
   data: [],
   message: "User has been followed" / "User has been unfollowed",
+}
+```
+
+### Search User (SEARCH SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                                                  |
+| ----------- | ---------------------------------------------------------------------------------- |
+| FETCH       | /api/feature/search?query=                                                         |
+| METHOD      | GET                                                                                |
+| Description | Feature's Endpoint used to search everyone by its username that contains the query |
+
+> Request Header
+
+```bash
+Authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success : boolean,
+  data : [
+    {
+      id : number,
+      username : string,
+      full_name : string,
+      avatar : string, *base64,
+    },
+    ...
+  ],
+  message : "Successfully get username which username contains ${query}",
 }
 ```
