@@ -3,7 +3,7 @@ import userModel from '../models/userModel';
 import postModel from '../models/postModel';
 
 import { generateResponse } from '../helpers';
-import { ResponseObject } from '../types';
+import { ResponseObject, Following } from '../types';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import requestModel from '../models/requestModel';
 
@@ -40,10 +40,13 @@ async function myProfile(req: Request, res: Response) {
 async function userProfile(req: Request, res: Response) {
   try {
     let { id } = req.params;
+    let decoded = (<any>req).decoded;
+    let { id: myId } = decoded;
     let userResult: ResponseObject = await userModel.getUserById(Number(id));
     let postResult: ResponseObject = await postModel.getPostByUserId(
       Number(id),
     );
+    let myUserResult: ResponseObject = await userModel.getUserById(myId);
     if (!userResult) {
       res.status(SERVER_OK).json({
         success: false,
@@ -53,6 +56,17 @@ async function userProfile(req: Request, res: Response) {
       return;
     }
     if (userResult.success && postResult.success) {
+      let i: number;
+      for (i = 0; i < myUserResult.data[0].following.length; i += 1) {
+        myUserResult.data[0].following[i] = JSON.parse(
+          myUserResult.data[0].following[i],
+        );
+      }
+      myUserResult.data[0].following.find((following: Following) => {
+        return following.id == Number(id);
+      })
+        ? (userResult.data[0].is_followed_by_you = true)
+        : (userResult.data[0].is_followed_by_you = false);
       res.status(SERVER_OK).json(
         generateResponse({
           success: true,
