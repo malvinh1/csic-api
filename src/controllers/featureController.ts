@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import userModel from '../models/userModel';
 import postModel from '../models/postModel';
-import { ResponseObject, PostRequestObject } from '../types';
+import { ResponseObject, PostRequestObject, Following } from '../types';
 import { generateResponse, dataUri } from '../helpers';
 import { uploader } from '../cloudinarySetup';
 import requestModel from '../models/requestModel';
@@ -342,4 +342,58 @@ async function addRequest(req: Request, res: Response) {
   }
 }
 
-export default { addPost, editProfile, editPost, deletePost, addRequest };
+async function followUser(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let { user_id } = req.params;
+    let result: ResponseObject;
+
+    let userData: ResponseObject = await userModel.getUserById(id);
+    let i: number;
+    let following: Array<Following> = [];
+    for (i = 0; i < userData.data[0].following.length; i += 1) {
+      following.push(JSON.parse(userData.data[0].following[i]));
+    }
+    userData.data[0].following = following;
+    if (
+      userData.data[0].following.find((following: Following) => {
+        return following.id == Number(user_id);
+      })
+    ) {
+      userData.data[0].following = userData.data[0].following.filter(
+        (following: Following) => {
+          return following.id != Number(user_id);
+        },
+      );
+      result = await userModel.updateFollowingUser(
+        userData.data[0].following,
+        id,
+        false,
+      );
+    } else {
+      userData.data[0].following.push({ id: user_id });
+      result = await userModel.updateFollowingUser(
+        userData.data[0].following,
+        id,
+        true,
+      );
+    }
+    if (result.success) {
+      res.status(SERVER_OK).json(generateResponse(result));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+export default {
+  addPost,
+  editPost,
+  deletePost,
+  editProfile,
+  addRequest,
+  followUser,
+};

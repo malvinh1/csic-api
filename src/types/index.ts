@@ -42,3 +42,7 @@ export type PostRequestObject = {
   tag: 'Available' | 'Expired' | 'Unavailable';
   image?: string;
 };
+
+export type Following = {
+  id: number;
+};

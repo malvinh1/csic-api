@@ -26,5 +26,6 @@ featureRouter.get(
   featureController.deletePost,
 );
 featureRouter.post('/add-request', featureController.addRequest);
+featureRouter.get('/follow/:user_id', featureController.followUser);
 
 export default featureRouter;
