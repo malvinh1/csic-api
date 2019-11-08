@@ -96,7 +96,7 @@ async function editProfile(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
     let { full_name, phone_number, location, gender, image } = req.body;
-    if (!full_name && !phone_number && !location && !gender && !req.file) {
+    if (!full_name && !phone_number && !location && !gender) {
       res.status(SERVER_OK).json({
         success: false,
         data: [],
@@ -181,6 +181,7 @@ async function editPost(req: Request, res: Response) {
       category,
       description,
       tag,
+      image,
     } = req.body;
     if (
       !item_name ||
@@ -245,6 +246,24 @@ async function editPost(req: Request, res: Response) {
             message: 'Something went wrong while processing your request',
           }),
         );
+    } else if (image) {
+      let userResponse: ResponseObject = await postModel.updatePost(
+        {
+          item_name,
+          buy_date,
+          exp_date,
+          category,
+          description,
+          image,
+          tag,
+        },
+        Number(post_id),
+      );
+      if (userResponse.success) {
+        res.status(SERVER_OK).json(generateResponse(userResponse));
+      } else {
+        res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+      }
     } else {
       let result: ResponseObject = await postModel.updatePost(
         {
