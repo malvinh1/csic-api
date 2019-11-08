@@ -77,7 +77,7 @@ Content-Type: multipart/form-data
   full_name: string,
   phone_number: string,
   location: string,
-  image: file, *optional
+  image: file | string, *optional
 }
 ```
 
@@ -125,8 +125,8 @@ Content-Type: application/json
 
 ```bash
 {
-credential: string, \*can login with email or username
-password: string,
+  credential: string, \*can login with email or username
+  password: string,
 }
 ```
 
@@ -340,7 +340,7 @@ authorization : <token app get when login>
 
 ```bash
 {
-  image: file,
+  image: file | string,
   item_name: string,
   buy_date: string, \*YYYY-MM-DD
   exp_date: string, \*YYYY-MM-DD
@@ -394,7 +394,7 @@ authorization : <token app get when login>
 
 ```bash
 {
-  image: file, *optional, don't send same image if user doesn't change the post image
+  image: file | string, *optional, don't send same image if user doesn't change the post image
   item_name: string,
   buy_date: string, \*YYYY-MM-DD
   exp_date: string, \*YYYY-MM-DD
