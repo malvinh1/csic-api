@@ -680,16 +680,16 @@ Authorization: <token app get when login>
 
 ```bash
 {
-  success : boolean,
-  data : [
+  success: boolean,
+  data: [
     {
-      id : number,
-      username : string,
-      full_name : string,
-      avatar : string, *base64,
+      id: number,
+      username: string,
+      full_name: string,
+      avatar: string, *base64,
     },
     ...
   ],
-  message : "Successfully get username which username contains ${query}",
+  message: "x results found",
 }
 ```
