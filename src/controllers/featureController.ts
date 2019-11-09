@@ -348,14 +348,23 @@ async function followUser(req: Request, res: Response) {
     let { id } = decoded;
     let { user_id } = req.params;
     let result: ResponseObject;
+    let otherResult: ResponseObject;
 
     let userData: ResponseObject = await userModel.getUserById(id);
+    let otherUserData: ResponseObject = await userModel.getUserById(
+      Number(user_id),
+    );
     let i: number;
     let following: Array<Following> = [];
+    let follower: Array<Following> = [];
     for (i = 0; i < userData.data[0].following.length; i += 1) {
       following.push(JSON.parse(userData.data[0].following[i]));
     }
+    for (i = 0; i < otherUserData.data[0].follower.length; i += 1) {
+      follower.push(JSON.parse(otherUserData.data[0].follower[i]));
+    }
     userData.data[0].following = following;
+    otherUserData.data[0].follower = follower;
     if (
       userData.data[0].following.find((following: Following) => {
         return following.id == Number(user_id);
@@ -366,16 +375,32 @@ async function followUser(req: Request, res: Response) {
           return following.id != Number(user_id);
         },
       );
+      otherUserData.data[0].follower = otherUserData.data[0].follower.filter(
+        (follower: Following) => {
+          return follower.id != id;
+        },
+      );
       result = await userModel.updateFollowingUser(
         userData.data[0].following,
         id,
         false,
       );
+      otherResult = await userModel.updateFollowerUser(
+        otherUserData.data[0].follower,
+        Number(user_id),
+        false,
+      );
     } else {
       userData.data[0].following.push({ id: user_id });
+      otherUserData.data[0].follower.push({ id });
       result = await userModel.updateFollowingUser(
         userData.data[0].following,
         id,
+        true,
+      );
+      otherResult = await userModel.updateFollowerUser(
+        otherUserData.data[0].follower,
+        Number(user_id),
         true,
       );
     }
