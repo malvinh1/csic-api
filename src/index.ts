@@ -25,7 +25,7 @@ async function serverSetup() {
   app.use('*', cloudinaryConfig);
   app.get('/', (req, res) => {
     res.status(SERVER_OK);
-    res.send('Welcome Home.');
+    res.send('Welcome to CSIC API');
   });
   app.use('/api', apiRouter);
   app.on('listening', function() {
