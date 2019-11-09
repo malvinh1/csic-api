@@ -326,11 +326,47 @@ async function addRequest(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
     let { id: user_id } = decoded;
-    let { post_id } = req.body;
+    let { post_id } = req.params;
 
     let result: ResponseObject = await requestModel.insertRequest(
       user_id,
       Number(post_id),
+    );
+    if (result.success) {
+      res.status(SERVER_OK).json(generateResponse(result));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(result));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+  }
+}
+
+async function answerRequest(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id: user_id } = decoded;
+    let { status, post_id } = req.body;
+    if (!status || !post_id) {
+      res.status(SERVER_OK).json({
+        success: false,
+        data: [],
+        message: 'Please fill all required fields',
+      });
+      return;
+    }
+    let postResult: ResponseObject = await postModel.getPostById(post_id);
+    if (postResult.data.user_id !== user_id) {
+      res.status(SERVER_OK).json({
+        success: false,
+        data: [],
+        message: 'You do not have permissions to answer this request',
+      });
+      return;
+    }
+    let result: ResponseObject = await requestModel.updateStatus(
+      status,
+      post_id,
     );
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
@@ -420,5 +456,6 @@ export default {
   deletePost,
   editProfile,
   addRequest,
+  answerRequest,
   followUser,
 };

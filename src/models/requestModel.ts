@@ -9,8 +9,8 @@ async function insertRequest(user_id: number, post_id: number) {
       [post_id],
     );
     let insertResult: QueryResult = await db.query(
-      'INSERT INTO requests (user_id, requester_id, post_id) VALUES ($1, $2, $3) RETURNING *',
-      [postResult.rows[0].user_id, user_id, post_id],
+      'INSERT INTO requests (user_id, requester_id, post_id, status) VALUES ($1, $2, $3, $4) RETURNING *',
+      [postResult.rows[0].user_id, user_id, post_id, 'Waiting'],
     );
     return {
       success: true,
@@ -68,4 +68,30 @@ async function getRequestByUser_id(id: number) {
   }
 }
 
-export default { insertRequest, getRequestByRequester_Id, getRequestByUser_id };
+async function updateStatus(status: string, post_id: number) {
+  try {
+    let db = await getDB();
+    let result: QueryResult = await db.query(
+      'UPDATE requests SET status = $1 WHERE post_id = $2',
+      [status, post_id],
+    );
+    return {
+      success: true,
+      data: result.rows,
+      message: 'Successfully update request status',
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
+export default {
+  insertRequest,
+  getRequestByRequester_Id,
+  getRequestByUser_id,
+  updateStatus,
+};
