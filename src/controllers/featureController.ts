@@ -1,4 +1,4 @@
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import userModel from '../models/userModel';
 import postModel from '../models/postModel';
@@ -458,7 +458,7 @@ async function searchUser(req: Request, res: Response) {
       userResponse = {
         success: true,
         data: [],
-        message: 'There are no Queries Provided. Focus Peter Focus!',
+        message: 'There are no Queries Provided.',
       };
     } else {
       userResponse = await userModel.getUserByQuery(query.toLowerCase());

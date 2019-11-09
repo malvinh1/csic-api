@@ -265,17 +265,19 @@ async function getUserByQuery(query: string) {
       `SELECT id, username, full_name, avatar FROM users where username LIKE '%' || $1 || '%'`,
       [query],
     );
-    if (user.rows.length === 0) {
+    let { rows } = user;
+    if (rows.length === 0) {
       return {
         success: true,
         data: [],
-        message: 'There are no user which username contains ' + query,
+        message: 'No results found!',
       };
     }
     return {
       success: true,
-      data: user.rows,
-      message: 'Successfully get username which username contains ' + query,
+      data: rows,
+      message:
+        rows.length === 1 ? '1 result found!' : rows.length + ' results found!',
     };
   } catch (e) {
     return {
