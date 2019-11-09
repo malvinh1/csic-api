@@ -26,12 +26,13 @@
 
 ### requests
 
-| Name         | Type | Description                                         |
-| ------------ | ---- | --------------------------------------------------- |
-| id           | int4 | Auto generated Serial by postgreSQL                 |
-| user_id      | int4 | Reference to users(id) whose get the request        |
-| requester_id | int4 | Reference to users(id) whose request the item       |
-| post_id      | int4 | Reference to posts(id) which item that is requested |
+| Name         | Type   | Description                                         |
+| ------------ | ------ | --------------------------------------------------- |
+| id           | int4   | Auto generated Serial by postgreSQL                 |
+| user_id      | int4   | Reference to users(id) whose get the request        |
+| requester_id | int4   | Reference to users(id) whose request the item       |
+| post_id      | int4   | Reference to posts(id) which item that is requested |
+| status       | string | 'Approved', 'Declined', 'Waiting'                   |
 
 ### users
 
@@ -319,6 +320,83 @@ Authorization: <token app get when login>
 }
 ```
 
+### MyRequest (REQUEST SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                 |
+| ----------- | --------------------------------- |
+| FETCH       | /api/page/myRequest               |
+| METHOD      | GET                               |
+| Description | Page's Endpoint to get my request |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+Authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      user_data: {
+        full_name: string,
+        location: string,
+      },
+      post_data: {
+        item_name: string,
+        image: string,
+      },
+      status: string, \* 'Approved', 'Declined', 'Waiting'
+    }
+  ],
+  message : "Successfully get myRequest data",
+}
+```
+
+### UserRequest (REQUEST SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                   |
+| ----------- | ----------------------------------- |
+| FETCH       | /api/page/userRequest               |
+| METHOD      | GET                                 |
+| Description | Page's Endpoint to get user request |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+Authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      user_data: {
+        full_name: string,
+        location: string,
+      },
+      post_data: {
+        item_name: string,
+        image: string,
+      },
+    }
+  ],
+  message : "Successfully get userRequest data",
+}
+```
+
 ---
 
 ## Features
@@ -510,7 +588,42 @@ Authorization : <token app get when login>
 }
 ```
 
-### Follow (TOGGLE FOLLOW & UNFOLLOW)
+### Add Request (REQUEST SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                   |
+| ----------- | ----------------------------------- |
+| FETCH       | /api/feature/request/:post_id       |
+| METHOD      | GET                                 |
+| Description | Feature's Endpoint to add a request |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+Authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      id: number,
+      user_id: number,
+      requester_id: number,
+      post_id: number,
+      status: string \* 'Approved', 'Declined', 'Waiting',
+    }
+  ],
+  message: "Successfully add a request"
+}
+```
+
+### Toggle Follow & Unfollow (USER PROFILE SCENE)
 
 - [x] Finished (Fetchable)
 

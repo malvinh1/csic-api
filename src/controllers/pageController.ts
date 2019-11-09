@@ -140,9 +140,34 @@ async function myRequest(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
     let { id } = decoded;
-    let result: ResponseObject = await requestModel.getRequestByRequester_Id(
+    let requestResult: ResponseObject = await requestModel.getRequestByRequester_Id(
       id,
     );
+    let result: ResponseObject = {
+      success: true,
+      data: [],
+      message: 'Successfully get myRequest data',
+    };
+    let i: number;
+    for (i = 0; i < requestResult.data.length; i += 1) {
+      let postFetchResult = await postModel.getPostById(
+        requestResult.data[i].post_id,
+      );
+      let userFetchResult = await userModel.getUserById(
+        requestResult.data[i].user_id,
+      );
+      result.data.push({
+        user_data: {
+          full_name: userFetchResult.data[0].full_name,
+          location: userFetchResult.data[0].location,
+        },
+        post_data: {
+          item_name: postFetchResult.data.item_name,
+          image: postFetchResult.data.image,
+        },
+        status: requestResult.data[i].status,
+      });
+    }
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
     } else {
@@ -157,7 +182,33 @@ async function userRequest(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
     let { id } = decoded;
-    let result: ResponseObject = await requestModel.getRequestByUser_id(id);
+    let requestResult: ResponseObject = await requestModel.getRequestByUser_id(
+      id,
+    );
+    let result: ResponseObject = {
+      success: true,
+      data: [],
+      message: 'Successfully get userRequest data',
+    };
+    let i: number;
+    for (i = 0; i < requestResult.data.length; i += 1) {
+      let postFetchResult = await postModel.getPostById(
+        requestResult.data[i].post_id,
+      );
+      let userFetchResult = await userModel.getUserById(
+        requestResult.data[i].requester_id,
+      );
+      result.data.push({
+        user_data: {
+          full_name: userFetchResult.data[0].full_name,
+          location: userFetchResult.data[0].location,
+        },
+        post_data: {
+          item_name: postFetchResult.data.item_name,
+          image: postFetchResult.data.image,
+        },
+      });
+    }
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
     } else {
