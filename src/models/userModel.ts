@@ -221,7 +221,6 @@ async function updateFollowingUser(
 ) {
   try {
     let db = await getDB();
-
     await db.query('UPDATE users SET following = $1 WHERE id=$2', [
       followingData,
       id,
@@ -236,6 +235,29 @@ async function updateFollowingUser(
   }
 }
 
+async function updateFollowerUser(
+  followerData: Array<Following>,
+  id: number,
+  follow: boolean,
+) {
+  try {
+    let db = await getDB();
+    await db.query('UPDATE users SET follower = $1 WHERE id=$2', [
+      followerData,
+      id,
+    ]);
+    return {
+      success: true,
+      data: [],
+      message: follow
+        ? 'Successfully add follower'
+        : 'Successfully remove follower',
+    };
+  } catch (e) {
+    return { success: false, data: [], message: String(e) };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
@@ -244,4 +266,5 @@ export default {
   getUserById,
   updateUser,
   updateFollowingUser,
+  updateFollowerUser,
 };
