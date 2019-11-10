@@ -635,7 +635,7 @@ Authorization: <token app get when login>
 
 | A           | B                                       |
 | ----------- | --------------------------------------- |
-| FETCH       | /api/feature/answer-request/post_id     |
+| FETCH       | /api/feature/answer-request/:post_id     |
 | METHOD      | POST                                    |
 | Description | Feature's Endpoint used to edit profile |
 
