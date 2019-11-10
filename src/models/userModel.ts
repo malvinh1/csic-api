@@ -258,6 +258,36 @@ async function updateFollowerUser(
   }
 }
 
+async function getUserByQuery(query: string) {
+  try {
+    let db = await getDB();
+    let user: QueryResult = await db.query(
+      `SELECT id, username, full_name, avatar FROM users where username LIKE '%' || $1 || '%'`,
+      [query],
+    );
+    let { rows } = user;
+    if (rows.length === 0) {
+      return {
+        success: true,
+        data: [],
+        message: 'No results found!',
+      };
+    }
+    return {
+      success: true,
+      data: rows,
+      message:
+        rows.length === 1 ? '1 result found!' : rows.length + ' results found!',
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
@@ -267,4 +297,5 @@ export default {
   updateUser,
   updateFollowingUser,
   updateFollowerUser,
+  getUserByQuery,
 };

@@ -450,6 +450,30 @@ async function followUser(req: Request, res: Response) {
   }
 }
 
+async function searchUser(req: Request, res: Response) {
+  try {
+    let { query } = req.query;
+    let userResponse: ResponseObject;
+    if (!query || query === '') {
+      userResponse = {
+        success: true,
+        data: [],
+        message: 'There are no Queries Provided.',
+      };
+    } else {
+      userResponse = await userModel.getUserByQuery(query.toLowerCase());
+    }
+    if (userResponse.success) {
+      res.status(SERVER_OK).json(generateResponse(userResponse));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(userResponse));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
 export default {
   addPost,
   editPost,
@@ -458,4 +482,5 @@ export default {
   addRequest,
   answerRequest,
   followUser,
+  searchUser,
 };
