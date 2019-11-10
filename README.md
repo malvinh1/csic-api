@@ -199,7 +199,7 @@ Authorization: <token app get when login>
       avatar: string | null,
     }
   ],
-  message : "Successfully get home data",
+  message: "Successfully get home data",
 }
 ```
 
@@ -227,7 +227,7 @@ Authorization: <token app get when login>
   success: boolean,
   data: [
    {
-     user : [
+     user: [
       {
         id: number,
         email: string,
@@ -242,7 +242,7 @@ Authorization: <token app get when login>
         is_followed_by_you: boolean
       }
      ],
-     post : [
+     post: [
       {
         id: number,
         user_id: number,
@@ -286,7 +286,7 @@ Authorization: <token app get when login>
   success: boolean,
   data: [
    {
-     user : [
+     user: [
       {
         id: number,
         email: string,
@@ -300,7 +300,7 @@ Authorization: <token app get when login>
         follower: Array[{id}]
       }
      ],
-     post : [
+     post: [
       {
         id: number,
         user_id: number,
@@ -355,7 +355,7 @@ Authorization: <token app get when login>
       status: string, \* 'Approved', 'Declined', 'Waiting'
     }
   ],
-  message : "Successfully get myRequest data",
+  message: "Successfully get myRequest data",
 }
 ```
 
@@ -393,7 +393,7 @@ Authorization: <token app get when login>
       },
     }
   ],
-  message : "Successfully get userRequest data",
+  message: "Successfully get userRequest data",
 }
 ```
 
@@ -476,7 +476,7 @@ authorization: <token app get when login>
 
 ```bash
 {
-  image: file | string, *optional, don't send same image if user doesn't change the post image
+  image: file | string, \*optional, do not send same image if user does not change the post image
   item_name: string,
   buy_date: string, \*YYYY-MM-DD
   exp_date: string, \*YYYY-MM-DD
@@ -523,16 +523,16 @@ authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization : <token app get when login>
+Authorization: <token app get when login>
 ```
 
 > Response Value
 
 ```bash
 {
-  success : boolean,
-  data : [],
-  message : "Successfully Getting Rid A Post!"
+  success: boolean,
+  data: [],
+  message: "Successfully Getting Rid A Post!"
 }
 ```
 
@@ -550,7 +550,7 @@ Authorization : <token app get when login>
 
 ```bash
 Content-Type: multipart/form-data
-Authorization : <token app get when login>
+Authorization: <token app get when login>
 ```
 
 > Request Body JSON
@@ -569,8 +569,8 @@ Authorization : <token app get when login>
 
 ```bash
 {
-  success : boolean,
-  data : [
+  success: boolean,
+  data: [
     {
       id: number,
       email: string,
@@ -584,7 +584,7 @@ Authorization : <token app get when login>
       follower: Array[id],
     }
   ],
-  message : "User profile has been changed"
+  message: "User profile has been changed"
 }
 ```
 
@@ -644,8 +644,8 @@ Authorization: <token app get when login>
 
 ```bash
 {
-  success : boolean,
-  data : [],
-  message : "User has been followed" / "User has been unfollowed",
+  success: boolean,
+  data: [],
+  message: "User has been followed" / "User has been unfollowed",
 }
 ```
