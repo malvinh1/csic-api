@@ -336,14 +336,13 @@ Authorization: <token app get when login>
 
 | A           | B                                 |
 | ----------- | --------------------------------- |
-| FETCH       | /api/page/myRequest               |
+| FETCH       | /api/page/my-request              |
 | METHOD      | GET                               |
 | Description | Page's Endpoint to get my request |
 
 > Request Header
 
 ```bash
-Content-Type: application/json
 Authorization: <token app get when login>
 ```
 
@@ -375,14 +374,13 @@ Authorization: <token app get when login>
 
 | A           | B                                   |
 | ----------- | ----------------------------------- |
-| FETCH       | /api/page/userRequest               |
+| FETCH       | /api/page/user-request              |
 | METHOD      | GET                                 |
 | Description | Page's Endpoint to get user request |
 
 > Request Header
 
 ```bash
-Content-Type: application/json
 Authorization: <token app get when login>
 ```
 
@@ -630,6 +628,40 @@ Authorization: <token app get when login>
     }
   ],
   message: "Successfully add a request"
+}
+```
+
+### Answer Request (REQUEST SCENE)
+
+| A           | B                                       |
+| ----------- | --------------------------------------- |
+| FETCH       | /api/feature/answer-request/:post_id     |
+| METHOD      | POST                                    |
+| Description | Feature's Endpoint used to accept or reject user's requests |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+Authorization: <token app get when login>
+```
+
+> Request Body JSON
+
+```bash
+{
+  status: string \* 'Approved', 'Declined', 'Waiting',
+  post_id: number
+}
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [],
+  message: "Successfully update request status"
 }
 ```
 
