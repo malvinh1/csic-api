@@ -525,8 +525,8 @@ async function getMessage(req: Request, res: Response) {
 
     chatListAll.sort((firstItem, secondItem) => {
       return (
-        firstItem.messages[firstItem.messages.length - 1].timestamp -
-        secondItem.messages[secondItem.messages.length - 1].timestamp
+        secondItem.messages[secondItem.messages.length - 1].timestamp -
+        firstItem.messages[firstItem.messages.length - 1].timestamp
       );
     });
 
