@@ -354,11 +354,13 @@ Authorization: <token app get when login>
   data: [
     {
       user_data: {
+        id: number,
         full_name: string,
         location: string,
         avatar: string | null,
       },
       post_data: {
+        id: number,
         item_name: string,
         image: string,
       },
@@ -637,7 +639,7 @@ Authorization: <token app get when login>
 
 | A           | B                                                           |
 | ----------- | ----------------------------------------------------------- |
-| FETCH       | /api/feature/answer-request/:post_id                        |
+| FETCH       | /api/feature/answer-request                                 |
 | METHOD      | POST                                                        |
 | Description | Feature's Endpoint used to accept or reject user's requests |
 
@@ -653,7 +655,8 @@ Authorization: <token app get when login>
 ```bash
 {
   status: string \* 'Approved', 'Declined', 'Waiting',
-  post_id: number
+  post_id: number,
+  requester_id: number
 }
 ```
 
