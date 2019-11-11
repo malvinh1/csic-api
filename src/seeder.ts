@@ -18,7 +18,7 @@ export async function seeder(db: Pool) {
   } catch (ignore) {}
   try {
     await db.query(
-      'CREATE TABLE chats(id SERIAL PRIMARY KEY, user_id SERIAL REFERENCES users(id), receiver_id SERIAL REFERENCES users(id), timestamp bigint, message text)',
+      'CREATE TABLE chats(id SERIAL PRIMARY KEY, sender_id SERIAL REFERENCES users(id), receiver_id SERIAL REFERENCES users(id), timestamp bigint, message text)',
     );
   } catch (ignore) {}
 }

@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import userModel from '../models/userModel';
 import postModel from '../models/postModel';
+import requestModel from '../models/requestModel';
+import chatModel from '../models/chatModel';
 import { ResponseObject, PostRequestObject, Following } from '../types';
 import { generateResponse, dataUri } from '../helpers';
 import { uploader } from '../cloudinarySetup';
-import requestModel from '../models/requestModel';
 
 async function addPost(req: Request, res: Response) {
   try {
@@ -477,6 +478,108 @@ async function searchUser(req: Request, res: Response) {
   }
 }
 
+async function getMessage(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let redundantChat = await chatModel.getGroupedChat(id);
+    let chatList: Array<{
+      user_id?: number;
+      sender_id?: number;
+      receiver_id?: number;
+    }> = [];
+    let flag: boolean;
+    redundantChat.data.forEach((firstItem) => {
+      flag = true;
+      chatList.forEach((item) => {
+        if (
+          firstItem.sender_id === item.receiver_id &&
+          firstItem.receiver_id === item.sender_id
+        ) {
+          flag = false;
+        }
+      });
+      if (flag) {
+        chatList.push(firstItem);
+      }
+    });
+
+    chatList = chatList.map((item) => {
+      if (item.sender_id === id) {
+        return { user_id: item.receiver_id };
+      } else {
+        return { user_id: item.sender_id };
+      }
+    });
+
+    let chatListAll = await Promise.all(
+      chatList.map(async (item) => {
+        let userResponse = await userModel.getUserById(item.user_id);
+        let messageList: ResponseObject = await chatModel.getChatBySenderIDOrReceiverID(
+          id,
+          item.user_id,
+        );
+        return { ...userResponse.data[0], messages: messageList.data };
+      }),
+    );
+
+    chatListAll.sort((firstItem, secondItem) => {
+      return (
+        firstItem.messages[firstItem.messages.length - 1].timestamp -
+        secondItem.messages[secondItem.messages.length - 1].timestamp
+      );
+    });
+
+    let finalResponse = {
+      success: true,
+      data: [
+        {
+          my_data: [
+            await userModel.getUserById(id).then((item) => {
+              return item.data[0];
+            }),
+          ],
+          chat_list: chatListAll,
+        },
+      ],
+      message: 'Successfully getting all of the chat list',
+    };
+
+    if (finalResponse.success) {
+      res.status(SERVER_OK).json(generateResponse(finalResponse));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(finalResponse));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
+async function sendMessage(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id: sender_id } = decoded;
+    let { receiver_id } = req.params;
+    let { message } = req.body;
+    let timestamp = Date.now();
+    let chatResponse: ResponseObject = await chatModel.insertChat(
+      sender_id,
+      Number(receiver_id),
+      timestamp,
+      message,
+    );
+    if (chatResponse.success) {
+      res.status(SERVER_OK).json(generateResponse(chatResponse));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(chatResponse));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
 export default {
   addPost,
   editPost,
@@ -486,4 +589,6 @@ export default {
   answerRequest,
   followUser,
   searchUser,
+  getMessage,
+  sendMessage,
 };
