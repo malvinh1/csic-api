@@ -117,7 +117,18 @@ async function home(req: Request, res: Response) {
       let post = await postModel.getPostByUserId(
         JSON.parse(user.data[0].following[i]).id,
       );
-      post.data.forEach((element) => {
+      post.data.forEach(async (element) => {
+        if (element.exp_date) {
+          if (Date.now() > element.exp_date) {
+            element.tag = 'EXPIRED';
+            postModel.updatePost(element, element.id);
+          }
+        } else if (element.buy_date) {
+          if (Date.now > element.buy_date) {
+            element.tag = 'EXPIRED';
+            postModel.updatePost(element, element.id);
+          }
+        }
         element.username = followingUser.data[0].username;
         element.full_name = followingUser.data[0].full_name;
         element.location = followingUser.data[0].location;
