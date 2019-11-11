@@ -169,11 +169,13 @@ async function myRequest(req: Request, res: Response) {
       );
       result.data.push({
         user_data: {
+          id: userFetchResult.data[0].id,
           full_name: userFetchResult.data[0].full_name,
           location: userFetchResult.data[0].location,
           avatar: userFetchResult.data[0].avatar,
         },
         post_data: {
+          id: postFetchResult.data.id,
           item_name: postFetchResult.data.item_name,
           image: postFetchResult.data.image,
         },
@@ -212,11 +214,13 @@ async function userRequest(req: Request, res: Response) {
       );
       result.data.push({
         user_data: {
+          id: userFetchResult.data[0].id,
           full_name: userFetchResult.data[0].full_name,
           location: userFetchResult.data[0].location,
           avatar: userFetchResult.data[0].avatar,
         },
         post_data: {
+          id: postFetchResult.data.id,
           item_name: postFetchResult.data.item_name,
           image: postFetchResult.data.image,
         },
