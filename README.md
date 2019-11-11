@@ -356,6 +356,7 @@ Authorization: <token app get when login>
       user_data: {
         full_name: string,
         location: string,
+        avatar: string | null,
       },
       post_data: {
         item_name: string,
@@ -394,6 +395,7 @@ Authorization: <token app get when login>
       user_data: {
         full_name: string,
         location: string,
+        avatar: string | null,
       },
       post_data: {
         item_name: string,
@@ -633,10 +635,10 @@ Authorization: <token app get when login>
 
 ### Answer Request (REQUEST SCENE)
 
-| A           | B                                       |
-| ----------- | --------------------------------------- |
-| FETCH       | /api/feature/answer-request/:post_id     |
-| METHOD      | POST                                    |
+| A           | B                                                           |
+| ----------- | ----------------------------------------------------------- |
+| FETCH       | /api/feature/answer-request/:post_id                        |
+| METHOD      | POST                                                        |
 | Description | Feature's Endpoint used to accept or reject user's requests |
 
 > Request Header

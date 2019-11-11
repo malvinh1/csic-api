@@ -160,6 +160,7 @@ async function myRequest(req: Request, res: Response) {
         user_data: {
           full_name: userFetchResult.data[0].full_name,
           location: userFetchResult.data[0].location,
+          avatar: userFetchResult.data[0].avatar,
         },
         post_data: {
           item_name: postFetchResult.data.item_name,
@@ -202,6 +203,7 @@ async function userRequest(req: Request, res: Response) {
         user_data: {
           full_name: userFetchResult.data[0].full_name,
           location: userFetchResult.data[0].location,
+          avatar: userFetchResult.data[0].avatar,
         },
         post_data: {
           item_name: postFetchResult.data.item_name,
