@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import { SERVER_OK, SERVER_BAD_REQUEST } from '../constants';
 import userModel from '../models/userModel';
 import postModel from '../models/postModel';
+import requestModel from '../models/requestModel';
+import chatModel from '../models/chatModel';
 import { ResponseObject, PostRequestObject, Following } from '../types';
 import { generateResponse, dataUri } from '../helpers';
 import { uploader } from '../cloudinarySetup';
-import requestModel from '../models/requestModel';
 
 async function addPost(req: Request, res: Response) {
   try {
@@ -477,6 +478,30 @@ async function searchUser(req: Request, res: Response) {
   }
 }
 
+async function sendMessage(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id: sender_id } = decoded;
+    let { receiver_id } = req.params;
+    let { message } = req.body;
+    let timestamp = Date.now();
+    let chatResponse: ResponseObject = await chatModel.insertChat(
+      sender_id,
+      Number(receiver_id),
+      timestamp,
+      message,
+    );
+    if (chatResponse.success) {
+      res.status(SERVER_OK).json(generateResponse(chatResponse));
+    } else {
+      res.status(SERVER_BAD_REQUEST).json(generateResponse(chatResponse));
+    }
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
 export default {
   addPost,
   editPost,
@@ -486,4 +511,5 @@ export default {
   answerRequest,
   followUser,
   searchUser,
+  sendMessage,
 };

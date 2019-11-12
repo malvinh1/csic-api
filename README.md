@@ -183,7 +183,7 @@ Content-Type: application/json
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -227,7 +227,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -286,7 +286,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -343,7 +343,7 @@ Authorization: <token app get when login>
 > Request Header
 
 ```bash
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -384,7 +384,7 @@ Authorization: <token app get when login>
 > Request Header
 
 ```bash
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -409,6 +409,72 @@ Authorization: <token app get when login>
 }
 ```
 
+### Chat List (CHAT SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                   |
+| ----------- | --------------------------------------------------- |
+| FETCH       | /api/page/chat                                      |
+| METHOD      | GET                                                 |
+| Description | Page's Endpoint to get user chat list with its info |
+
+> Request Header
+
+```bash
+authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: true,
+  data: [
+    {
+      my_data: [
+        {
+          id: number,
+          email: string,
+          username: string,
+          full_name: string,
+          phone_number: string,
+          location: string,
+          avatar: string | null,
+          gender: string \* 'Male', 'Female', 'Other',
+          following: Array[{id}],
+          follower: Array[{id}]
+        }
+      ],
+      chat_list: [
+        {
+          id: number,
+          email: string,
+          username: string,
+          full_name: string,
+          phone_number: string,
+          location: string,
+          avatar: string | null,
+          gender: string \* 'Male', 'Female', 'Other',
+          following: Array[{id}],
+          follower: Array[{id}]
+          messages: [
+            {
+              sender_id: number,
+              timestamp: string,
+              message": string
+            },
+            ...
+          ]
+        },
+        ...
+      ]
+    }
+  ],
+  message: "Successfully getting all of the chat list"
+}
+```
+
 ---
 
 ## Features
@@ -427,7 +493,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: multipart/form-data
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Request Body JSON
@@ -535,7 +601,7 @@ authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -562,7 +628,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: multipart/form-data
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Request Body JSON
@@ -614,7 +680,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -647,7 +713,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Request Body JSON
@@ -684,7 +750,7 @@ Authorization: <token app get when login>
 
 ```bash
 Content-Type: application/json
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -710,7 +776,7 @@ Authorization: <token app get when login>
 > Request Header
 
 ```bash
-Authorization: <token app get when login>
+authorization: <token app get when login>
 ```
 
 > Response Value
@@ -728,5 +794,32 @@ Authorization: <token app get when login>
     ...
   ],
   message: "x results found",
+}
+```
+
+### Send Chat (CHAT SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                       |
+| ----------- | ------------------------------------------------------- |
+| FETCH       | /api/feature/chat/:receiver_id                          |
+| METHOD      | POST                                                    |
+| Description | Feature's Endpoint used to send a message to other user |
+
+> Request Header
+
+```bash
+Content-Type: application/json
+authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [],
+  message: "Successfully insert chat message.",
 }
 ```

@@ -29,5 +29,6 @@ featureRouter.get('/request/:post_id', featureController.addRequest);
 featureRouter.post('/answer-request', featureController.answerRequest);
 featureRouter.get('/follow/:user_id', featureController.followUser);
 featureRouter.get('/search', featureController.searchUser);
+featureRouter.post('/chat/:receiver_id', featureController.sendMessage);
 
 export default featureRouter;
