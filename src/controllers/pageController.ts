@@ -117,7 +117,18 @@ async function home(req: Request, res: Response) {
       let post = await postModel.getPostByUserId(
         JSON.parse(user.data[0].following[i]).id,
       );
-      post.data.forEach((element) => {
+      post.data.forEach(async (element) => {
+        if (element.exp_date) {
+          if (Date.now() > element.exp_date) {
+            element.tag = 'EXPIRED';
+            postModel.updatePost(element, element.id);
+          }
+        } else if (element.buy_date) {
+          if (Date.now > element.buy_date) {
+            element.tag = 'EXPIRED';
+            postModel.updatePost(element, element.id);
+          }
+        }
         element.username = followingUser.data[0].username;
         element.full_name = followingUser.data[0].full_name;
         element.location = followingUser.data[0].location;
@@ -156,15 +167,24 @@ async function myRequest(req: Request, res: Response) {
       let userFetchResult = await userModel.getUserById(
         requestResult.data[i].user_id,
       );
+      let {
+        id: user_id,
+        full_name,
+        location,
+        avatar,
+      } = userFetchResult.data[0];
+      let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
         user_data: {
-          full_name: userFetchResult.data[0].full_name,
-          location: userFetchResult.data[0].location,
-          avatar: userFetchResult.data[0].avatar,
+          id: user_id,
+          full_name,
+          location,
+          avatar,
         },
         post_data: {
-          item_name: postFetchResult.data.item_name,
-          image: postFetchResult.data.image,
+          id: post_id,
+          item_name,
+          image,
         },
         status: requestResult.data[i].status,
       });
@@ -199,15 +219,24 @@ async function userRequest(req: Request, res: Response) {
       let userFetchResult = await userModel.getUserById(
         requestResult.data[i].requester_id,
       );
+      let {
+        id: user_id,
+        full_name,
+        location,
+        avatar,
+      } = userFetchResult.data[0];
+      let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
         user_data: {
-          full_name: userFetchResult.data[0].full_name,
-          location: userFetchResult.data[0].location,
-          avatar: userFetchResult.data[0].avatar,
+          id: user_id,
+          full_name,
+          location,
+          avatar,
         },
         post_data: {
-          item_name: postFetchResult.data.item_name,
-          image: postFetchResult.data.image,
+          id: post_id,
+          item_name,
+          image,
         },
       });
     }

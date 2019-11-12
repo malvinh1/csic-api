@@ -68,13 +68,24 @@ async function getRequestByUser_id(id: number) {
   }
 }
 
-async function updateStatus(status: string, post_id: number) {
+async function updateStatus(
+  status: string,
+  post_id: number,
+  requester_id: number,
+) {
   try {
     let db = await getDB();
     let result: QueryResult = await db.query(
-      'UPDATE requests SET status = $1 WHERE post_id = $2',
-      [status, post_id],
+      'UPDATE requests SET status = $1 WHERE post_id = $2 AND requester_id = $3',
+      [status, post_id, requester_id],
     );
+    status.toLowerCase() === 'approved'
+      ? await db.query(
+          'UPDATE requests SET status = $1 WHERE post_id = $2 AND requester_id != $3',
+          ['Declined', post_id, requester_id],
+        )
+      : null;
+
     return {
       success: true,
       data: result.rows,

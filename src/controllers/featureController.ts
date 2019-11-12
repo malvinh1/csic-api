@@ -346,7 +346,7 @@ async function answerRequest(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
     let { id: user_id } = decoded;
-    let { status, post_id } = req.body;
+    let { status, post_id, requester_id } = req.body;
     if (!status || !post_id) {
       res.status(SERVER_OK).json({
         success: false,
@@ -367,7 +367,10 @@ async function answerRequest(req: Request, res: Response) {
     let result: ResponseObject = await requestModel.updateStatus(
       status,
       post_id,
+      requester_id,
     );
+    postResult.data.tag = 'UNAVAIlABLE';
+    await postModel.updatePost(postResult.data, post_id);
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
     } else {
