@@ -167,17 +167,24 @@ async function myRequest(req: Request, res: Response) {
       let userFetchResult = await userModel.getUserById(
         requestResult.data[i].user_id,
       );
+      let {
+        id: user_id,
+        full_name,
+        location,
+        avatar,
+      } = userFetchResult.data[0];
+      let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
         user_data: {
-          id: userFetchResult.data[0].id,
-          full_name: userFetchResult.data[0].full_name,
-          location: userFetchResult.data[0].location,
-          avatar: userFetchResult.data[0].avatar,
+          id: user_id,
+          full_name,
+          location,
+          avatar,
         },
         post_data: {
-          id: postFetchResult.data.id,
-          item_name: postFetchResult.data.item_name,
-          image: postFetchResult.data.image,
+          id: post_id,
+          item_name,
+          image,
         },
         status: requestResult.data[i].status,
       });
@@ -212,17 +219,24 @@ async function userRequest(req: Request, res: Response) {
       let userFetchResult = await userModel.getUserById(
         requestResult.data[i].requester_id,
       );
+      let {
+        id: user_id,
+        full_name,
+        location,
+        avatar,
+      } = userFetchResult.data[0];
+      let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
         user_data: {
-          id: userFetchResult.data[0].id,
-          full_name: userFetchResult.data[0].full_name,
-          location: userFetchResult.data[0].location,
-          avatar: userFetchResult.data[0].avatar,
+          id: user_id,
+          full_name,
+          location,
+          avatar,
         },
         post_data: {
-          id: postFetchResult.data.id,
-          item_name: postFetchResult.data.item_name,
-          image: postFetchResult.data.image,
+          id: post_id,
+          item_name,
+          image,
         },
       });
     }
