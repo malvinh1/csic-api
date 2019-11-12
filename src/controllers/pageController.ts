@@ -239,6 +239,7 @@ async function userRequest(req: Request, res: Response) {
           item_name,
           image,
         },
+        status: requestResult.data[i].status,
       });
     }
     if (result.success) {
