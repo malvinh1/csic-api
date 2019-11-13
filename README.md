@@ -353,18 +353,15 @@ authorization: <token app get when login>
   success: boolean,
   data: [
     {
-      user_data: {
-        id: number,
-        full_name: string,
-        location: string,
-        avatar: string | null,
-      },
-      post_data: {
-        id: number,
-        item_name: string,
-        image: string,
-      },
-      status: string, \* 'Approved', 'Declined', 'Waiting'
+      user_id: string,
+      full_name: string,
+      location: string,
+      avatar: string | null,
+      post_id: string,
+      item_name: string,
+      image: string,
+      status: string \* 'Approved', 'Denied', 'Waiting',
+      created_at: string,
     }
   ],
   message: "Successfully get myRequest data",
@@ -394,15 +391,15 @@ authorization: <token app get when login>
   success: boolean,
   data: [
     {
-      user_data: {
-        full_name: string,
-        location: string,
-        avatar: string | null,
-      },
-      post_data: {
-        item_name: string,
-        image: string,
-      },
+      user_id: string,
+      full_name: string,
+      location: string,
+      avatar: string | null,
+      post_id: string,
+      item_name: string,
+      image: string,
+      status: string \* 'Approved', 'Denied', 'Waiting',
+      created_at: string,
     }
   ],
   message: "Successfully get userRequest data",
