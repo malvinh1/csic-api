@@ -814,6 +814,14 @@ Content-Type: application/json
 authorization: <token app get when login>
 ```
 
+> Request Body
+
+```bash
+{
+  message: string,
+}
+```
+
 > Response Value
 
 ```bash
