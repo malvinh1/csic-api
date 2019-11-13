@@ -1,4 +1,4 @@
-import { QueryResult, Pool } from 'pg';
+import { Pool } from 'pg';
 
 export async function seeder(db: Pool) {
   try {
