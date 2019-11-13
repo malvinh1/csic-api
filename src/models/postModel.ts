@@ -144,13 +144,32 @@ async function updatePost(
 async function deletePostById(post_id: number) {
   try {
     let db = await getDB();
+    // TODO: use this if we want to handle user cant delete post if status still waiting
+    // let selectRequest: QueryResult = await db.query(
+    //   'SELECT status posts where post_id = $1',
+    //   [post_id],
+    // );
+    // let found = selectRequest.rows.find((item) => {
+    //   return item.status == 'Waiting';
+    // });
+    // if (found) {
+    //   return {
+    //     success: true,
+    //     data: [],
+    //     message:
+    //       "Can't delete post, you still have requests waiting to be answered.",
+    //   };
+    // }
+
+    await db.query('DELETE FROM requests where post_id = $1', [post_id]);
+
     let post: QueryResult = await db.query('DELETE FROM posts where id = $1', [
       post_id,
     ]);
     return {
       success: true,
       data: post.rows[0],
-      message: 'Successfully Getting Rid A Post!',
+      message: 'Successfully getting rid a post and its request!',
     };
   } catch (e) {
     return {

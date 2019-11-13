@@ -38,7 +38,7 @@ async function connect() {
 
     return client;
   } catch (e) {
-    console.log(e);
+    console.log(String(e));
   }
 }
 
