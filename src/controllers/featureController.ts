@@ -328,7 +328,26 @@ async function addRequest(req: Request, res: Response) {
     let decoded = (<any>req).decoded;
     let { id: user_id } = decoded;
     let { post_id } = req.params;
+    let spamRequest: boolean = false;
 
+    let requestResult: ResponseObject = await requestModel.getRequestByRequester_Id(
+      user_id,
+    );
+    requestResult.data.forEach((element) => {
+      if (element.post_id === Number(post_id)) {
+        spamRequest = true;
+      }
+    });
+    if (spamRequest) {
+      res.status(SERVER_OK).json(
+        generateResponse({
+          success: false,
+          data: [],
+          message: 'Cannot add request to the same post!',
+        }),
+      );
+      return;
+    }
     let result: ResponseObject = await requestModel.insertRequest(
       user_id,
       Number(post_id),
