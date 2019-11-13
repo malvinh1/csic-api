@@ -13,7 +13,7 @@ export async function seeder(db: Pool) {
   } catch (ignore) {}
   try {
     await db.query(
-      'CREATE TABLE requests(id SERIAL PRIMARY KEY, user_id SERIAL REFERENCES users(id), requester_id SERIAL REFERENCES users(id), post_id SERIAL REFERENCES posts(id), status varchar(50))',
+      'CREATE TABLE requests(id SERIAL PRIMARY KEY, user_id SERIAL REFERENCES users(id), requester_id SERIAL REFERENCES users(id), post_id SERIAL REFERENCES posts(id), status varchar(50), created_at DATE not null default NOW())',
     );
   } catch (ignore) {}
   try {

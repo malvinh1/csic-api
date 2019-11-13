@@ -176,20 +176,19 @@ async function myRequest(req: Request, res: Response) {
       } = userFetchResult.data[0];
       let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
-        user_data: {
-          id: user_id,
-          full_name,
-          location,
-          avatar,
-        },
-        post_data: {
-          id: post_id,
-          item_name,
-          image,
-        },
+        user_id,
+        full_name,
+        location,
+        avatar,
+        post_id,
+        item_name,
+        image,
         status: requestResult.data[i].status,
+        created_at: requestResult.data[i].created_at,
       });
     }
+    result.data.sort((a, b) => b.created_at - a.created_at);
+
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
     } else {
@@ -228,20 +227,19 @@ async function userRequest(req: Request, res: Response) {
       } = userFetchResult.data[0];
       let { id: post_id, item_name, image } = postFetchResult.data;
       result.data.push({
-        user_data: {
-          id: user_id,
-          full_name,
-          location,
-          avatar,
-        },
-        post_data: {
-          id: post_id,
-          item_name,
-          image,
-        },
+        user_id,
+        full_name,
+        location,
+        avatar,
+        post_id,
+        item_name,
+        image,
         status: requestResult.data[i].status,
+        created_at: requestResult.data[i].created_at,
       });
     }
+    result.data.sort((a, b) => b.created_at - a.created_at);
+
     if (result.success) {
       res.status(SERVER_OK).json(generateResponse(result));
     } else {
