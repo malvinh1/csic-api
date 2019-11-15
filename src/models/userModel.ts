@@ -100,12 +100,6 @@ async function userSignIn(userObject: UserSignIn) {
             token: token,
           };
         }
-      } else {
-        return {
-          success: false,
-          data: [],
-          message: 'Incorrect email or password.',
-        };
       }
     }
     if (userResultUsername.rows[0]) {
@@ -120,14 +114,13 @@ async function userSignIn(userObject: UserSignIn) {
           message: 'Login Success',
           token: token,
         };
-      } else {
-        return {
-          success: false,
-          data: [],
-          message: 'Incorrect email or password.',
-        };
       }
     }
+    return {
+      success: false,
+      data: [],
+      message: 'Incorrect email or password.',
+    };
   } catch (e) {
     return {
       success: false,
