@@ -176,7 +176,7 @@ async function getUserById(id: number) {
   try {
     let db = await getDB();
     let user: QueryResult = await db.query(
-      'SELECT * FROM users where id = $1',
+      'SELECT username FROM users where id = $1',
       [id],
     );
     delete user.rows[0].password;
@@ -287,6 +287,31 @@ async function getUserByQuery(query: string) {
   }
 }
 
+async function getNearbyUser(user_id: string) {
+  try {
+    let db = await getDB();
+    let locationQuery: QueryResult = await db.query(
+      'SELECT location FROM users where id = $1',
+      [user_id],
+    );
+    let user: QueryResult = await db.query(
+      'SELECT id, username, full_name, avatar, location from users where location = $1 LIMIT 20',
+      [locationQuery.rows[0].location],
+    );
+    return {
+      success: true,
+      data: user.rows,
+      message: 'Here are the list of nearby people near you.',
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: [],
+      message: String(e),
+    };
+  }
+}
+
 export default {
   userSignUp,
   userSignIn,
@@ -297,4 +322,5 @@ export default {
   updateFollowingUser,
   updateFollowerUser,
   getUserByQuery,
+  getNearbyUser,
 };
