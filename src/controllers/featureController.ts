@@ -497,6 +497,62 @@ async function searchUser(req: Request, res: Response) {
   }
 }
 
+async function getFollowingUser(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let i: number;
+
+    let userResult = await userModel.getUserById(id);
+    let result = {
+      success: true,
+      data: [],
+      message: 'Successfully get following data',
+    };
+
+    let userData = userResult.data[0];
+
+    for (i = 0; i < userData.following.length; i += 1) {
+      userData.following[i] = JSON.parse(userData.following[i]);
+      let followingResult = await userModel.getUserById(
+        userData.following[i].id,
+      );
+      result.data.push(followingResult.data[0]);
+    }
+    res.status(SERVER_OK).json(generateResponse(result));
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
+async function getFollowerUser(req: Request, res: Response) {
+  try {
+    let decoded = (<any>req).decoded;
+    let { id } = decoded;
+    let i: number;
+
+    let userResult = await userModel.getUserById(id);
+    let result = {
+      success: true,
+      data: [],
+      message: 'Successfully get follower data',
+    };
+
+    let userData = userResult.data[0];
+
+    for (i = 0; i < userData.follower.length; i += 1) {
+      userData.follower[i] = JSON.parse(userData.follower[i]);
+      let followerResult = await userModel.getUserById(userData.follower[i].id);
+      result.data.push(followerResult.data[0]);
+    }
+    res.status(SERVER_OK).json(generateResponse(result));
+  } catch (e) {
+    res.status(SERVER_BAD_REQUEST).json(String(e));
+    return;
+  }
+}
+
 async function sendMessage(req: Request, res: Response) {
   try {
     let decoded = (<any>req).decoded;
@@ -529,6 +585,8 @@ export default {
   addRequest,
   answerRequest,
   followUser,
+  getFollowingUser,
+  getFollowerUser,
   searchUser,
   sendMessage,
 };
