@@ -176,7 +176,7 @@ async function getUserById(id: number) {
   try {
     let db = await getDB();
     let user: QueryResult = await db.query(
-      'SELECT username FROM users where id = $1',
+      'SELECT * FROM users where id = $1',
       [id],
     );
     delete user.rows[0].password;
