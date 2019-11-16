@@ -794,6 +794,86 @@ authorization: <token app get when login>
 }
 ```
 
+### Get Following User (CHAT SCENE/MY PROFILE SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                         |
+| ----------- | --------------------------------------------------------- |
+| FETCH       | /api/feature/following-user                               |
+| METHOD      | GET                                                       |
+| Description | Feature's Endpoint that works for get following user data |
+
+> Request Header
+
+```bash
+authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      id: number,
+      email: string,
+      username: string,
+      full_name: string,
+      phone_numbe: string,
+      location: string,
+      avatar: string | null,
+      gender: string \* 'Male', 'Female', 'Other',
+      following: [{id}],
+      follower: [{id}],
+    },
+    ...
+  ],
+  message: "Successfully get following data",
+}
+```
+
+### Get Follower User (CHAT SCENE/MY PROFILE SCENE)
+
+- [x] Finished (Fetchable)
+
+| A           | B                                                        |
+| ----------- | -------------------------------------------------------- |
+| FETCH       | /api/feature/follower-user                               |
+| METHOD      | GET                                                      |
+| Description | Feature's Endpoint that works for get follower user data |
+
+> Request Header
+
+```bash
+authorization: <token app get when login>
+```
+
+> Response Value
+
+```bash
+{
+  success: boolean,
+  data: [
+    {
+      id: number,
+      email: string,
+      username: string,
+      full_name: string,
+      phone_numbe: string,
+      location: string,
+      avatar: string | null,
+      gender: string \* 'Male', 'Female', 'Other',
+      following: [{id}],
+      follower: [{id}],
+    },
+    ...
+  ],
+  message: "Successfully get follower data",
+}
+```
+
 ### Send Chat (CHAT SCENE)
 
 - [x] Finished (Fetchable)
