@@ -475,14 +475,12 @@ async function followUser(req: Request, res: Response) {
 
 async function searchUser(req: Request, res: Response) {
   try {
+    let decoded = (<any>req).decoded;
+    let { id: user_id } = decoded;
     let { query } = req.query;
     let userResponse: ResponseObject;
     if (!query || query === '') {
-      userResponse = {
-        success: true,
-        data: [],
-        message: 'There are no Queries Provided.',
-      };
+      userResponse = await userModel.getNearbyUser(user_id);
     } else {
       userResponse = await userModel.getUserByQuery(query.toLowerCase());
     }

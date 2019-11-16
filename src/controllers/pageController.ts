@@ -283,7 +283,6 @@ async function getMessage(req: Request, res: Response) {
         return { user_id: item.sender_id };
       }
     });
-
     let chatListAll = await Promise.all(
       chatList.map(async (item) => {
         let userResponse = await userModel.getUserById(item.user_id);
