@@ -482,7 +482,10 @@ async function searchUser(req: Request, res: Response) {
     if (!query || query === '') {
       userResponse = await userModel.getNearbyUser(user_id);
     } else {
-      userResponse = await userModel.getUserByQuery(query.toLowerCase());
+      userResponse = await userModel.getUserByQuery(
+        query.toLowerCase(),
+        user_id,
+      );
     }
     if (userResponse.success) {
       res.status(SERVER_OK).json(generateResponse(userResponse));

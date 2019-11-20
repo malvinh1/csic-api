@@ -257,7 +257,7 @@ async function updateFollowerUser(
   }
 }
 
-async function getUserByQuery(query: string) {
+async function getUserByQuery(query: string, user_id: string) {
   try {
     let db = await getDB();
     let user: QueryResult = await db.query(
@@ -272,11 +272,16 @@ async function getUserByQuery(query: string) {
         message: 'No results found!',
       };
     }
+    let result = rows.filter((item) => {
+      return user_id !== item.id;
+    });
     return {
       success: true,
-      data: rows,
+      data: result,
       message:
-        rows.length === 1 ? '1 result found!' : rows.length + ' results found!',
+        result.length === 1
+          ? '1 result found!'
+          : result.length + ' results found!',
     };
   } catch (e) {
     return {
@@ -300,7 +305,9 @@ async function getNearbyUser(user_id: string) {
     );
     return {
       success: true,
-      data: user.rows,
+      data: user.rows.filter((item) => {
+        return user_id !== item.id;
+      }),
       message: 'Here are the list of nearby people near you.',
     };
   } catch (e) {
