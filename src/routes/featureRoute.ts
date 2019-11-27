@@ -29,8 +29,8 @@ featureRouter.get('/request/:post_id', featureController.addRequest);
 featureRouter.post('/answer-request', featureController.answerRequest);
 featureRouter.get('/follow/:user_id', featureController.followUser);
 featureRouter.get('/search', featureController.searchUser);
-featureRouter.get('/following-user', featureController.getFollowingUser);
-featureRouter.get('/follower-user', featureController.getFollowerUser);
+featureRouter.get('/following-user/:user_id', featureController.getFollowingUser);
+featureRouter.get('/follower-user/:user_id', featureController.getFollowerUser);
 featureRouter.post('/chat/:receiver_id', featureController.sendMessage);
 
 export default featureRouter;
