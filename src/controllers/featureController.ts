@@ -503,8 +503,8 @@ async function getFollowingUser(req: Request, res: Response) {
     let decoded = (<any>req).decoded;
     let { id } = decoded;
     let i: number;
-
-    let userResult = await userModel.getUserById(id);
+    let { user_id } = req.params;
+    let userResult = await userModel.getUserById(user_id ? user_id : id);
     let result = {
       success: true,
       data: [],
@@ -532,8 +532,8 @@ async function getFollowerUser(req: Request, res: Response) {
     let decoded = (<any>req).decoded;
     let { id } = decoded;
     let i: number;
-
-    let userResult = await userModel.getUserById(id);
+    let { user_id } = req.params;
+    let userResult = await userModel.getUserById(user_id ? user_id : id);
     let result = {
       success: true,
       data: [],
